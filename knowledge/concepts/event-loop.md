@@ -4,7 +4,7 @@ type: concept
 domain: frontend
 knowledge_type: model
 status: understood
-mastery: 3
+mastery: 4
 importance: 5
 review: auto
 feynman_passed: true
@@ -34,9 +34,9 @@ _(2026-06-17 세션에서 추론으로 재구성)_
 - **실무 함의:** Promise 체인은 같은 틱의 setTimeout보다 항상 앞선다.
 
 ## 연결 / 철학적 질문
-- **연결:** 콜 스택(call-stack)이 비는 시점이 이벤트 루프의 트리거다.
-- **대조:** 마이크로태스크 큐 vs 매크로태스크 큐의 우선순위 차이.
-- **why:** 왜 싱글 스레드인데 블로킹 없이 동시성이 가능한가?
+- **연결:** [콜 스택](call-stack.md)이 비는 시점이 이벤트 루프의 트리거다.
+- **대조:** [마이크로태스크 큐](microtask-queue.md) vs [매크로태스크 큐](macrotask-queue.md)의 우선순위(전부 비움 vs 하나).
+- **why — 싱글 스레드인데 어떻게 동시성?** (2026-06-17 재구성) 콜 스택은 하나뿐(=싱글 스레드)이지만, `setTimeout`·`fetch`·이벤트 같은 무거운 "기다림"은 **Web API(브라우저의 다른 스레드)** 가 떠맡는다. JS 스레드는 맡기고 바로 다음 일을 하므로 멈추지 않고(논블로킹), Web API가 끝낸 콜백을 큐에 돌려주면 이벤트 루프가 콜 스택 빈 틈에 올린다. 진짜 병렬이 아니라 **동시성을 흉내** 내는 것. (Node에선 libuv가 같은 역할.)
 
 ## 미해결 질문
 - `requestAnimationFrame`은 어느 큐에 들어가며 렌더 타이밍과 어떤 관계인가?
