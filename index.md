@@ -5,8 +5,10 @@
 
 ## 분야별 mastery 집계
 <!-- 코치가 frontmatter를 집계해 갱신. 예: frontend 3개(평균 2.3) / network 1개(1.0) -->
+- frontend: 1개 (평균 2.0)
 
 ## frontend
+- [이벤트 루프](knowledge/concepts/event-loop.md) — 콜 스택이 빌 때 큐에서 작업을 꺼내 동시성을 흉내 내는 런타임 메커니즘 · frontend · mastery 2/5 · importance 5/5
 ## backend
 ## network
 ## os
