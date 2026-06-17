@@ -178,7 +178,7 @@ review_due: 2026-06-20       # 복습 큐가 읽는 다음 복습일
 
 ### 7.2 데일리 세션 — "오늘 세션 시작" (매일의 진입점)
 - 코치 브리핑 4갈래: ① 오늘 복습할 것(`review_due` × importance 순) ② `_inbox` 미처리분 ③ **백로그 환기** ("전에 X 공부하고 싶다 했지 — 오늘 할까?") ④ 추천 다음 학습(gaps 기반).
-- 복습은 파인만 방식 (§7.x). 세션 끝에 `learning-os/sessions/YYYY-MM-DD.md` 기록 + `log.md` 한 줄.
+- 복습은 파인만 방식 (§8). 세션 끝에 `learning-os/sessions/YYYY-MM-DD.md` 기록 + `log.md` 한 줄.
 
 ### 7.3 캡처 triage — `_inbox` 처리
 - 이동 중 던져둔 메모/링크를 ingest 대상으로 분류하거나 개념 페이지로 승격.
