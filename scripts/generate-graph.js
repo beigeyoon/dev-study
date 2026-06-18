@@ -28,6 +28,6 @@ warnings.forEach((w) => console.warn(w));
 mkdirSync(dirname(OUT), { recursive: true });
 writeFileSync(
   OUT,
-  JSON.stringify({ nodes, edges, generatedAt: new Date().toISOString() }, null, 2)
+  JSON.stringify({ nodes, edges }, null, 2)
 );
 console.log(`그래프 생성 완료: 노드 ${nodes.length}개, 간선 ${edges.length}개 → ${relative(ROOT, OUT)}`);
