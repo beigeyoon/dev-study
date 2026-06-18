@@ -1,0 +1,34 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; font-family: system-ui, sans-serif; background: #0f1117; color: #e5e7eb; }
+#cy { position: absolute; inset: 0; }
+
+#legend {
+  position: absolute; left: 16px; bottom: 16px; z-index: 5;
+  background: rgba(20,23,31,.9); border: 1px solid #2a3043; border-radius: 10px;
+  padding: 12px 14px; max-width: 240px; font-size: 13px;
+}
+#legend h2 { margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: #9ca3af; }
+#legend hr { border: none; border-top: 1px solid #2a3043; margin: 10px 0; }
+.legend-enc { margin: 0; padding-left: 16px; }
+.legend-enc li { margin: 3px 0; }
+.legend-dom { display: flex; align-items: center; gap: 8px; margin: 3px 0; }
+.legend-dom .swatch { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+
+.panel {
+  position: absolute; top: 0; right: 0; z-index: 10;
+  width: min(420px, 90vw); height: 100%; overflow-y: auto;
+  background: #161922; border-left: 1px solid #2a3043;
+  padding: 24px 24px 48px; transition: transform .22s ease;
+}
+.panel.hidden { transform: translateX(100%); }
+#panel-close {
+  position: absolute; top: 12px; right: 16px; background: none; border: none;
+  color: #9ca3af; font-size: 28px; line-height: 1; cursor: pointer;
+}
+#panel-close:hover { color: #e5e7eb; }
+.panel h1 { font-size: 22px; margin: 0 30px 12px 0; }
+.badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+.badge { font-size: 12px; padding: 3px 8px; border-radius: 999px; background: #232838; color: #cbd5e1; }
+.panel h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: #9ca3af; margin: 22px 0 6px; }
+.panel a.source { display: inline-block; margin-top: 22px; color: #60a5fa; }
+.panel :is(p, ul, li) { line-height: 1.6; }
