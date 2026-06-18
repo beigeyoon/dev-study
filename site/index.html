@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>지식 그래프 · dev-study</title>
+  <link rel="stylesheet" href="./style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.30.2/cytoscape.min.js"></script>
+</head>
+<body>
+  <div id="cy"></div>
+
+  <aside id="legend" aria-label="범례">
+    <h2>범례</h2>
+    <div id="legend-domains"></div>
+    <hr />
+    <ul class="legend-enc">
+      <li><b>크기</b> = 중요도(importance)</li>
+      <li><b>채움/밝기</b> = 숙련도(mastery)</li>
+      <li><b>주황 점선</b> = seed/고아(빈틈)</li>
+    </ul>
+  </aside>
+
+  <aside id="panel" class="panel hidden" aria-label="개념 상세">
+    <button id="panel-close" aria-label="닫기">×</button>
+    <div id="panel-body"></div>
+  </aside>
+
+  <script src="./main.js"></script>
+</body>
+</html>
