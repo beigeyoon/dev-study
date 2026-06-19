@@ -4,27 +4,58 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>지식 그래프 · dev-study</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css" />
   <link rel="stylesheet" href="./style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.30.2/cytoscape.min.js"></script>
 </head>
 <body>
-  <div id="cy"></div>
+  <div class="kg-app">
+    <header class="kg-header">
+      <div class="kg-title-wrap">
+        <span class="kg-title">Yooni 지식 그래프</span>
+        <span id="kg-stats" class="kg-stats"></span>
+      </div>
 
-  <aside id="legend" aria-label="범례">
-    <h2>범례</h2>
-    <div id="legend-domains"></div>
-    <hr />
-    <ul class="legend-enc">
-      <li><b>크기</b> = 중요도(importance)</li>
-      <li><b>채움/밝기</b> = 숙련도(mastery)</li>
-      <li><b>주황 점선</b> = seed/고아(빈틈)</li>
-    </ul>
-  </aside>
+      <div class="kg-spacer"></div>
 
-  <aside id="panel" class="panel hidden" aria-label="개념 상세">
-    <button id="panel-close" aria-label="닫기">×</button>
-    <div id="panel-body"></div>
-  </aside>
+      <div class="kg-search-wrap">
+        <svg class="kg-search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6f7890" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
+        <input id="kg-search" class="kg-search" type="text" placeholder="개념·도메인 검색" autocomplete="off" />
+      </div>
+
+      <button id="kg-gaps" class="kg-btn kg-gaps-btn" title="빈틈(seed/고아)만 보기">
+        <span class="kg-gaps-icon"></span>
+        <span class="kg-gap-label">빈틈만</span>
+        <span class="kg-gaps-dot"></span>
+      </button>
+
+      <div class="kg-zoom">
+        <button id="kg-zoom-out" class="kg-btn kg-icon-btn" title="축소" aria-label="축소"><svg width="15" height="15" viewBox="0 0 24 24" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+        <button id="kg-fit" class="kg-btn kg-icon-btn" title="전체 보기" aria-label="전체 보기"><svg width="14" height="14" viewBox="0 0 24 24" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" fill="none"><path d="M3 8V4h4M21 8V4h-4M3 16v4h4M21 16v4h-4"></path></svg></button>
+        <button id="kg-zoom-in" class="kg-btn kg-icon-btn" title="확대" aria-label="확대"><svg width="15" height="15" viewBox="0 0 24 24" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" fill="none"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+      </div>
+    </header>
+
+    <main class="kg-main">
+      <div id="cy"></div>
+
+      <aside class="kg-legend" aria-label="범례">
+        <div class="kg-legend-title">도메인 · 클릭해 필터</div>
+        <div id="kg-domains"></div>
+        <div class="kg-legend-divider"></div>
+        <div class="kg-enc">
+          <div class="kg-enc-row"><span class="kg-enc-size"><span class="kg-enc-dot-sm"></span><span class="kg-enc-dot-lg"></span></span>크기 = 중요도</div>
+          <div class="kg-enc-row"><span class="kg-enc-pie"></span>채움 = 숙련도</div>
+          <div class="kg-enc-row"><span class="kg-enc-gap"></span>흰 점선 = 빈틈</div>
+        </div>
+      </aside>
+
+      <aside id="kg-panel" class="kg-panel" aria-label="개념 상세">
+        <button id="kg-panel-close" class="kg-panel-close" aria-label="닫기">×</button>
+        <div id="kg-panel-content"></div>
+      </aside>
+    </main>
+  </div>
 
   <script src="./main.js"></script>
 </body>
