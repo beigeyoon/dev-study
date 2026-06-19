@@ -9,3 +9,6 @@ type: ingest | session | query | lint | gaps
 ## [2026-06-17] ingest | 콜 스택 · 매크로태스크 큐 · 마이크로태스크 큐 (이벤트 루프 끊긴 연결 3개 해소)
 ## [2026-06-17] session | 콜 스택 + 큐/Web API 모델 파인만 통과 (3개 신규 understood, mastery 3) · 이벤트 루프 3→4
 ## [2026-06-18] session | 지식 그래프 시각화 사이트 구축 — frontmatter→graph.json 빌드 + Cytoscape 렌더 + 클릭 패널 + GitHub Pages 자동 배포 (main 병합 완료)
+## [2026-06-18] session | async/await 파인만 통과 (신규 understood, mastery 3) — 오해 3개(동기 머리·마이크로 vs 매크로·상수 통과) 교정 · 마이크로큐 미해결 질문 해소 · 4개와 양방향 연결
+## [2026-06-18] session | Promise.all 병렬 vs 순차 await (신규 understood, mastery 4) — 평가순서·동시성≠병렬성·CPU 경계(Web Worker 전이)까지 추론 도달 · 5개와 양방향 연결
+## [2026-06-19] ingest | Promise (신규 understood, mastery 3, feynman 통과) — ⭐선행 누락분 해소 · 상태 3종(동사 resolve vs 명사 fulfilled)·인자 전달·executor·백그라운드 일꾼이 누름·.then 등록 vs 큐 진입·상태 기억으로 타이밍 경쟁 해방까지 추론 재구성 · 오해 3개 교정 · 기존 5개와 양방향 연결

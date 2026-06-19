@@ -11,7 +11,7 @@ feynman_passed: true
 created: 2026-06-17
 updated: 2026-06-17
 sources: []
-related: [concepts/event-loop.md, concepts/macrotask-queue.md, concepts/microtask-queue.md]
+related: [concepts/event-loop.md, concepts/macrotask-queue.md, concepts/microtask-queue.md, concepts/async-await.md, concepts/promise-all-vs-sequential.md, concepts/promise.md]
 tags: [runtime, javascript, execution]
 review_due: 2026-06-20
 ---

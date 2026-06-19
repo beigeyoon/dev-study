@@ -11,7 +11,7 @@ feynman_passed: true
 created: 2026-06-17
 updated: 2026-06-17
 sources: []
-related: [concepts/event-loop.md, concepts/macrotask-queue.md, concepts/call-stack.md]
+related: [concepts/promise.md, concepts/event-loop.md, concepts/macrotask-queue.md, concepts/call-stack.md, concepts/async-await.md, concepts/promise-all-vs-sequential.md]
 tags: [async, runtime, javascript, promise]
 review_due: 2026-06-20
 ---
@@ -37,7 +37,7 @@ _(2026-06-17 세션, 추론으로 재구성)_
 - **why:** 왜 마이크로를 매크로보다 먼저, 그것도 전부 비울까? → Promise 체인이 다음 렌더/타이머 전에 일관되게 완결되도록.
 
 ## 미해결 질문
-- `async/await`는 내부적으로 어느 시점에 마이크로태스크를 만드나? (`await` 뒤 코드 = 마이크로태스크?)
+- ✅ 해소(2026-06-18): `async/await`는 내부적으로 어느 시점에 마이크로태스크를 만드나? → `await x` ≈ `Promise.resolve(x).then(...)`. `await` 뒤 코드가 `.then` 콜백처럼 마이크로큐로 간다. 상세는 [async/await](async-await.md).
 
 ## 실전 사례
 <!-- Promise vs setTimeout 순서로 디버깅한 사례 연결. -->

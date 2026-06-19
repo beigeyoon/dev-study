@@ -9,7 +9,10 @@
 
 ## 곧 due (7일 내)
 <!-- 다가오는 복습 미리보기 -->
-**이벤트 루프 클러스터 — 전부 2026-06-20 due (함께 복습 권장):**
+**2026-06-20 대규모 due (7개 몰아서 — Promise 토대 위에서 클러스터 점검):**
+- Promise (importance 5, mastery 3) — 신규, 토대. 복습 시 상위 개념 굳는지 점검
+- async/await (importance 4, mastery 3) — 6-19에서 이월
+- Promise.all 병렬 vs 순차 await (importance 4, mastery 4) — 6-19에서 이월
 - 이벤트 루프 (importance 5, mastery 4)
 - 콜 스택 (importance 5, mastery 3)
 - 매크로태스크 큐 (importance 4, mastery 3)

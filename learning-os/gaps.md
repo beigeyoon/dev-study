@@ -10,6 +10,9 @@
 <!-- status: seed 로 오래 머문 페이지 -->
 - 없음 (현재 모든 페이지 understood 이상)
 
+## 선행 누락 (foundation gap)
+- ✅ 해소(2026-06-19): **Promise** 페이지 생성 + async/await·Promise.all·마이크로큐와 양방향 연결. 토대 빈칸 메움. → [Promise](../knowledge/concepts/promise.md). 다음 복습 때 상위 3개 페이지가 "이해한 구조"로 굳는지 점검.
+
 ## 로드맵 빈 영역
 <!-- roadmap.md 대비 개념이 없는 토픽 -->
 - frontend 외 8개 분야(backend·network·os·cs·database·devops·ai·system-design) 전부 비어 있음.
