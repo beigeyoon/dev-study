@@ -69,6 +69,20 @@ _(2026-06-19 세션, 추론으로 재구성 — 백지 아닌 앵커 추론)_
 - "resolve가 값을 return한다" → ❌ 인자로 전달한다.
 - "이미 fulfilled된 Promise에 .then을 늦게 붙이면 콜백이 안 간다" → ❌ Promise가 값을 기억하므로 **즉시 마이크로큐로** 간다(오히려 가장 빠른 케이스).
 
+### 상자 모델 (2026-06-19 복습에서 자기 말로 재구성)
+Promise = **값을 담는 상자**(데이터 그 자체 아님). 칸이 셋:
+```
+┌──────────────────────────────────────┐
+│ ① 상태  : pending → fulfilled/rejected │  (settled되면 박제, 불변)
+│ ② 값    : (비었음) → 결과값            │  (값은 .then이 아니라 상자가 들고 있음)
+│ ③ 할 일 : [ cb, ... ]                  │  (.then(cb)이 여기 등록만)
+└──────────────────────────────────────┘
+```
+- `fetch()` 직후 = `[pending, 비었음]`. 응답 오면 작업자가 resolve → `[fulfilled, 값]`.
+- `Promise.resolve(null)` = **기다릴 일이 없으니** pending을 건너뛰고 처음부터 `[fulfilled, null]`로 태어남.
+- `.then(cb)` = ③에 cb를 **등록만**(실행 ❌). settled되는 순간 엔진이 **② 박제값을 꺼내 cb(값)을 마이크로큐에 투입**.
+- 인과 방향 교정: "값이 채워짐 → 기다릴 것 없음 → fulfilled"(상태가 먼저가 아니라 값/기다림이 상태를 정함).
+
 ## 연결 / 철학적 질문
 - **상위/응용:** [async/await](async-await.md) — Promise의 문법 설탕. `await x` ≈ `Promise.resolve(x).then(...)`. Promise를 알아야 async/await의 실행 모델이 보인다.
 - **연결:** [마이크로태스크 큐](microtask-queue.md) — `.then` 콜백의 행선지. "왜 마이크로큐가 Promise 콜백 전용인지"의 토대.

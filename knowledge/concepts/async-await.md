@@ -9,11 +9,11 @@ importance: 4
 review: auto
 feynman_passed: true
 created: 2026-06-18
-updated: 2026-06-18
+updated: 2026-06-19
 sources: []
 related: [concepts/promise.md, concepts/microtask-queue.md, concepts/event-loop.md, concepts/call-stack.md, concepts/macrotask-queue.md, concepts/promise-all-vs-sequential.md]
 tags: [async, runtime, javascript, promise]
-review_due: 2026-06-20
+review_due: 2026-06-21
 ---
 
 ## 한 줄 정의
@@ -51,6 +51,8 @@ _(2026-06-18 세션, 추론으로 재구성)_
   - `await x` = `Promise.resolve(x).then(...)` → 어제 배운 규칙으로 `.then` 콜백은 **마이크로큐**. 따라서 `await` 뒤 코드는 같은 틱의 `setTimeout(0)`(매크로)보다 항상 먼저.
   - 상수든 이미 끝난 Promise든 `.then`은 동기 실행되는 법이 없으므로, `await`는 무조건 멈춘다.
 - 응용 통과: `1 3 5 4 2` (sync→micro→macro), `start A end B C` (await 만나면 즉시 호출자 복귀, 두 await = 마이크로 2회).
+
+**복습 (2026-06-19):** ⚠️ "await 뒤 코드 = 매크로큐" 오해가 **재발**(6-18에 교정했던 그것). → `setTimeout` 대조(`3`이 `T`보다 먼저 나오는 모순)로 스스로 마이크로큐임을 재도출. 회복 후 `await null`이 왜 멈추는지를 Promise 상태기계로 끝까지 재구성(`Promise.resolve(null)`=태어날 때부터 fulfilled → `.then`은 등록만 → 콜백은 무조건 마이크로큐 경유 → "통과"는 없다). **회귀가 있었으므로 review_due를 1일로 리셋(6-21), mastery 3 유지.** 다음 복습 핵심 점검: 마이크로 vs 매크로 즉답 여부.
 
 ## 연결 / 철학적 질문
 - **연결:** [마이크로태스크 큐](microtask-queue.md) — `await` 뒤 코드의 행선지. (어제의 미해결 질문 "await 뒤 코드 = 마이크로태스크?"의 답이 여기.)

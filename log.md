@@ -12,3 +12,4 @@ type: ingest | session | query | lint | gaps
 ## [2026-06-18] session | async/await 파인만 통과 (신규 understood, mastery 3) — 오해 3개(동기 머리·마이크로 vs 매크로·상수 통과) 교정 · 마이크로큐 미해결 질문 해소 · 4개와 양방향 연결
 ## [2026-06-18] session | Promise.all 병렬 vs 순차 await (신규 understood, mastery 4) — 평가순서·동시성≠병렬성·CPU 경계(Web Worker 전이)까지 추론 도달 · 5개와 양방향 연결
 ## [2026-06-19] ingest | Promise (신규 understood, mastery 3, feynman 통과) — ⭐선행 누락분 해소 · 상태 3종(동사 resolve vs 명사 fulfilled)·인자 전달·executor·백그라운드 일꾼이 누름·.then 등록 vs 큐 진입·상태 기억으로 타이밍 경쟁 해방까지 추론 재구성 · 오해 3개 교정 · 기존 5개와 양방향 연결
+## [2026-06-19] session | 복습 — async/await(⚠️매크로/마이크로 회귀→자력 회복, review_due 1일 리셋, m3 유지) · Promise 토대 재다지기(상자 모델 자기말 재구성, promise.md 박제) · Promise.all 복습은 다음 세션 1순위로 보류
