@@ -9,11 +9,11 @@ importance: 4
 review: auto
 feynman_passed: true
 created: 2026-06-17
-updated: 2026-06-17
+updated: 2026-06-21
 sources: []
-related: [concepts/event-loop.md, concepts/microtask-queue.md, concepts/call-stack.md, concepts/async-await.md, concepts/promise-all-vs-sequential.md, concepts/promise.md]
+related: [concepts/event-loop.md, concepts/microtask-queue.md, concepts/call-stack.md, concepts/async-await.md, concepts/promise-all-vs-sequential.md, concepts/promise.md, concepts/closure.md]
 tags: [async, runtime, javascript]
-review_due: 2026-06-20
+review_due: 2026-06-24
 ---
 
 ## 한 줄 정의

@@ -9,11 +9,11 @@ importance: 5
 review: auto
 feynman_passed: true
 created: 2026-06-17
-updated: 2026-06-17
+updated: 2026-06-21
 sources: []
-related: [concepts/event-loop.md, concepts/macrotask-queue.md, concepts/microtask-queue.md, concepts/async-await.md, concepts/promise-all-vs-sequential.md, concepts/promise.md]
+related: [concepts/event-loop.md, concepts/macrotask-queue.md, concepts/microtask-queue.md, concepts/async-await.md, concepts/promise-all-vs-sequential.md, concepts/promise.md, concepts/closure.md]
 tags: [runtime, javascript, execution]
-review_due: 2026-06-20
+review_due: 2026-06-24
 ---
 
 ## 한 줄 정의
@@ -39,7 +39,7 @@ _(2026-06-17 세션, 추론으로 재구성)_
 - **1차 원리:** 중첩 구조 → LIFO. 자료구조 선택이 자의가 아니라 문제의 성질에서 강제됨.
 
 ## 미해결 질문
-- 비동기 콜백이 큐에서 콜 스택으로 올라올 때, 등록 당시 함수 프레임은 이미 사라졌는데 어떻게 변수에 접근하나? (→ 클로저/실행 컨텍스트 떡밥)
+- ✅ 해소(2026-06-21): 비동기 콜백이 큐에서 콜 스택으로 올라올 때, 등록 당시 함수 프레임은 이미 사라졌는데 어떻게 변수에 접근하나? → 잡힌 변수는 **클로저**로 **힙에 대피**해 프레임과 따로 산다. 변수 수명은 프레임이 아니라 도달 가능성(참조)이 결정. → [클로저](closure.md).
 
 ## 실전 사례
 <!-- 무거운 동기 연산으로 UI 프리징 디버깅한 사례가 생기면 연결. -->
