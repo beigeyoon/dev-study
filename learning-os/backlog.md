@@ -14,5 +14,12 @@
 - [ ] **requestAnimationFrame / 렌더 파이프라인** — (importance: 3, 매크로큐인지 별도 렌더 단계인지 미해결. 로드맵 frontend-렌더링과 연결)
 - [ ] **Web Worker** — (importance: 3, ⬆️2→3 상향 2026-06-18: CPU 계산 병렬화의 답으로 부상. "Promise.all=I/O용, 계산=Worker" 경계 완성. postMessage 복사 vs 참조도 떡밥. 진짜 병렬 처리, "동시성 흉내"와 대조)
 
+## 코치 제안 (승인 대기) — 2026-06-22 HTTP 학습에서
+- [ ] **상태 비저장(stateless) → 쿠키 / 세션 / 토큰** — (importance: 4, HTTP는 요청마다 독립인데 로그인 상태는 어떻게 유지? 인증의 토대. HTTP 심화 1순위)
+- [ ] **HTTPS / TLS** — (importance: 4, HTTP 텍스트가 평문으로 가면 위험. 암호화·인증서가 HTTP 위에 뭘 더하나. network 다음 칸)
+- [ ] **HTTP 메서드 의미론 / 멱등성(idempotency)** — (importance: 3, GET=안전, PUT vs PATCH, DELETE 멱등 — REST 설계의 토대)
+- [ ] **TCP/IP (선 아래)** — (importance: 3, HTTP 텍스트가 실제로 서버까지 어떻게 가나. HTTP/2·3 차이도 여기서)
+- [ ] **백엔드 기초 (서버 · API)** — (importance: 4, fetch의 반대편. 요청이 도착하면 서버가 뭘 하나. fullstack 본체)
+
 ## 코치 제안 (승인 대기)
 <!-- 공백 분석/연결 제안에서 나온 후보. 사용자 승인 시 위로 이동. -->

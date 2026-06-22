@@ -9,11 +9,11 @@ importance: 5
 review: auto
 feynman_passed: true
 created: 2026-06-19
-updated: 2026-06-19
+updated: 2026-06-22
 sources: []
-related: [concepts/async-await.md, concepts/microtask-queue.md, concepts/event-loop.md, concepts/macrotask-queue.md, concepts/promise-all-vs-sequential.md]
+related: [concepts/async-await.md, concepts/microtask-queue.md, concepts/event-loop.md, concepts/macrotask-queue.md, concepts/promise-all-vs-sequential.md, concepts/http.md]
 tags: [async, runtime, javascript, promise]
-review_due: 2026-06-20
+review_due: 2026-06-25
 ---
 
 ## 한 줄 정의
@@ -82,6 +82,12 @@ Promise = **값을 담는 상자**(데이터 그 자체 아님). 칸이 셋:
 - `Promise.resolve(null)` = **기다릴 일이 없으니** pending을 건너뛰고 처음부터 `[fulfilled, null]`로 태어남.
 - `.then(cb)` = ③에 cb를 **등록만**(실행 ❌). settled되는 순간 엔진이 **② 박제값을 꺼내 cb(값)을 마이크로큐에 투입**.
 - 인과 방향 교정: "값이 채워짐 → 기다릴 것 없음 → fulfilled"(상태가 먼저가 아니라 값/기다림이 상태를 정함).
+
+### 2026-06-22 복습 (1순위 carry-over — 직접 점검 첫 세션)
+앵커: `new Promise(res=>{log "A"; res("X"); log "B"}); log "C"; p.then(v=>log v); log "D"` 의 출력 순서.
+- **메운 빈칸 = executor의 동기 타이밍.** 처음엔 `C`를 `A`·`B`보다 앞에 둬 `C A B D X`로 오답(executor가 `.then` 시점이나 그 이후에 도는 줄로 착각). 교정 추론: `fetch()`가 *즉시* 요청을 쏘려면 그 요청을 쏘는 executor가 이미 돌았어야 한다 + `new Promise(fn)`은 그냥 동기 함수 호출(`[..].forEach(fn)`처럼 *지금* 실행) → executor는 `new Promise` 평가 **그 순간** 통째로 실행 → **A B C D X**.
+- **재확인 = `.then`의 2단계.** `.then(cb)` → ① promise에 cb **등록**(실행도 큐도 아님) → ② promise가 **settled되는 순간** 마이크로큐 적재. 이 퍼즐은 executor가 이미 `resolve`를 눌러 `.then` 호출 시점에 *이미 settled* → ①②가 거의 동시 → "바로 적재"처럼 보였을 뿐. 늦게 붙은 `.then`도 안 놓치는 이유가 바로 이 박제.
+- 규칙 압축: **"new Promise → executor 즉시 동기 실행 / .then 콜백 → 등록 후 settled 시 마이크로큐."**
 
 ## 연결 / 철학적 질문
 - **상위/응용:** [async/await](async-await.md) — Promise의 문법 설탕. `await x` ≈ `Promise.resolve(x).then(...)`. Promise를 알아야 async/await의 실행 모델이 보인다.

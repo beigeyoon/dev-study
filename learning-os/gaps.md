@@ -15,6 +15,8 @@
 
 ## 로드맵 빈 영역
 <!-- roadmap.md 대비 개념이 없는 토픽 -->
-- frontend 외 8개 분야(backend·network·os·cs·database·devops·ai·system-design) 전부 비어 있음.
+- ✅ 첫 점(2026-06-22): **network** 영역 개방 — [HTTP](../knowledge/concepts/http.md) 생성(learning, m2). fetch 사슬과 양방향 연결. 아직 1개뿐, 깊이 미달.
+- 여전히 빈 7개 분야: backend·os·cs·database·devops·ai·system-design.
+- network 내 다음 칸(HTTP 미해결 질문): 상태 비저장→쿠키/세션/토큰, HTTPS/TLS, HTTP 메서드 의미론, TCP/IP. → backlog 등록.
 - frontend 내에서도 "브라우저 동작"만 채워짐. **렌더링·상태관리·성능**은 미착수.
-- 코치 제안 다음 후보: 네트워크(HTTP/TLS) 또는 frontend 렌더 파이프라인 — 둘 다 현업 활용도 높음.
+- 코치 제안 다음 후보: ① HTTP 심화(stateless→인증, 백엔드 관문) ② backend 기초(fetch의 반대편) ③ frontend 렌더 파이프라인.
