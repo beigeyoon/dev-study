@@ -11,7 +11,7 @@ feynman_passed: true
 created: 2026-06-17
 updated: 2026-06-21
 sources: []
-related: [concepts/event-loop.md, concepts/macrotask-queue.md, concepts/microtask-queue.md, concepts/async-await.md, concepts/promise-all-vs-sequential.md, concepts/promise.md, concepts/closure.md]
+related: [concepts/event-loop.md, concepts/macrotask-queue.md, concepts/microtask-queue.md, concepts/async-await.md, concepts/promise-all-vs-sequential.md, concepts/promise.md, concepts/closure.md, concepts/process-vs-thread.md]
 tags: [runtime, javascript, execution]
 review_due: 2026-06-24
 ---
@@ -37,6 +37,7 @@ _(2026-06-17 세션, 추론으로 재구성)_
 - **builds-toward:** 콜 스택이 비는 시점 = [이벤트 루프](event-loop.md)의 트리거.
 - **대조:** 콜 스택(동기 실행) ↔ [매크로](macrotask-queue.md)/[마이크로](microtask-queue.md) 큐(비동기 대기).
 - **1차 원리:** 중첩 구조 → LIFO. 자료구조 선택이 자의가 아니라 문제의 성질에서 강제됨.
+- **builds-under:** "콜 스택이 하나 = JS 싱글 스레드"의 그 *스레드*가 뭔지는 [프로세스 vs 스레드](process-vs-thread.md). 스레드가 하나라 race condition·락을 걱정 안 해도 되는 게 싱글 스레드의 트레이드오프 뒷면.
 
 ## 미해결 질문
 - ✅ 해소(2026-06-21): 비동기 콜백이 큐에서 콜 스택으로 올라올 때, 등록 당시 함수 프레임은 이미 사라졌는데 어떻게 변수에 접근하나? → 잡힌 변수는 **클로저**로 **힙에 대피**해 프레임과 따로 산다. 변수 수명은 프레임이 아니라 도달 가능성(참조)이 결정. → [클로저](closure.md).

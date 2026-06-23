@@ -11,7 +11,7 @@ feynman_passed: true
 created: 2026-06-18
 updated: 2026-06-21
 sources: []
-related: [concepts/promise.md, concepts/async-await.md, concepts/event-loop.md, concepts/macrotask-queue.md, concepts/microtask-queue.md, concepts/call-stack.md]
+related: [concepts/promise.md, concepts/async-await.md, concepts/event-loop.md, concepts/macrotask-queue.md, concepts/microtask-queue.md, concepts/call-stack.md, concepts/process-vs-thread.md]
 tags: [async, performance, javascript, promise, concurrency]
 review_due: 2026-06-24
 ---
@@ -61,7 +61,7 @@ _(2026-06-18 세션, 추론으로 재구성)_
 
 ## 미해결 질문
 - 여러 async 함수가 인터리빙될 때 정확한 마이크로태스크 순서는?
-- Web Worker는 메모리를 공유하나? `postMessage`는 복사인가 참조인가? (→ 백로그 Web Worker와 연결)
+- ✅ 부분 해소(2026-06-23): Web Worker는 메모리를 공유하지 않고 `postMessage`로 **복사**한다 — 공유하면 race condition이 터지니 일부러 격리. → [프로세스 vs 스레드](process-vs-thread.md). (`SharedArrayBuffer`로 진짜 공유 시엔 직접 락 필요.)
 
 ## 실전 사례
 <!-- 순차 await로 느렸던 API 호출을 Promise.all로 묶어 개선한 사례 연결. -->

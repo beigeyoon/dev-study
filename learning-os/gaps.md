@@ -15,8 +15,11 @@
 
 ## 로드맵 빈 영역
 <!-- roadmap.md 대비 개념이 없는 토픽 -->
-- ✅ 첫 점(2026-06-22): **network** 영역 개방 — [HTTP](../knowledge/concepts/http.md) 생성(learning, m2). fetch 사슬과 양방향 연결. 아직 1개뿐, 깊이 미달.
-- 여전히 빈 7개 분야: backend·os·cs·database·devops·ai·system-design.
-- network 내 다음 칸(HTTP 미해결 질문): 상태 비저장→쿠키/세션/토큰, HTTPS/TLS, HTTP 메서드 의미론, TCP/IP. → backlog 등록.
+- ✅ 첫 점(2026-06-22): **network** 영역 개방 — [HTTP](../knowledge/concepts/http.md) 생성. 2026-06-23 understood·m3 승격.
+- ✅ network 2번째 점(2026-06-23): [쿠키/세션/토큰](../knowledge/concepts/cookie-session-token.md) 생성(learning, m2). HTTP stateless 떡밥 해소 + 양방향 연결. network 2개(평균 2.5)로 깊이 생기기 시작.
+- ✅ os 영역 개방(2026-06-23): [프로세스 vs 스레드](../knowledge/concepts/process-vs-thread.md) 생성(learning, m2). 콜스택·이벤트루프·Promise.all과 양방향 연결 — "JS 싱글스레드"·"동시성≠병렬성"·"Web Worker 복사"의 밑바닥을 깖. (frontend 비동기 클러스터의 토대가 뒤늦게 채워짐.)
+- 여전히 빈 6개 분야: backend·cs·database·devops·ai·system-design.
+- network 내 다음 칸: HTTPS/TLS(평문 쿠키 탈취 직결, 1순위), 쿠키 보안(HttpOnly/SameSite/CSRF), JWT 서명 구조, HTTP 메서드 의미론, TCP/IP. → backlog 등록.
+- os 내 다음 칸(process-vs-thread 미해결 질문): 락/뮤텍스·데드락, OS 스케줄링·컨텍스트 스위치, SharedArrayBuffer/Atomics.
 - frontend 내에서도 "브라우저 동작"만 채워짐. **렌더링·상태관리·성능**은 미착수.
 - 코치 제안 다음 후보: ① HTTP 심화(stateless→인증, 백엔드 관문) ② backend 기초(fetch의 반대편) ③ frontend 렌더 파이프라인.
