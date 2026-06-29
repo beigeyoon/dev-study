@@ -3,17 +3,17 @@ title: 쿠키 / 세션 / 토큰 (stateless 인증)
 type: concept
 domain: network
 knowledge_type: model
-status: learning
-mastery: 2
+status: understood
+mastery: 3
 importance: 4
 review: auto
-feynman_passed: false
+feynman_passed: true
 created: 2026-06-23
-updated: 2026-06-23
+updated: 2026-06-24
 sources: []
 related: [concepts/http.md]
 tags: [network, auth, authentication, cookie, session, token, jwt, stateless, http]
-review_due: 2026-06-24
+review_due: 2026-06-27
 ---
 
 ## 한 줄 정의
@@ -67,6 +67,8 @@ _(2026-06-23 첫 접촉, 유도 추론 — HTTP stateless 떡밥에서 출발)_
 - **세션 vs 토큰을 자력으로 압축:** "세션 = 서버가 상태를 하나하나 기억(stateful) ↔ 토큰 = 정보가 토큰 자체에 담겨 서버가 안 기억해도 됨(stateless 가능)." → "누가 상태를 기억하는가" 축을 스스로 잡음.
 - **약점은 막힘(학습 신호):** 토큰 무효화는 못 풀었고, "지울 게 없다 = 깔끔히 무효화 불가"가 정답임을 확인 → 트레이드오프(확장 ↔ 무효화)로 정리.
 - _(주의: 첫 접촉 = 유도된 학습. 세션/토큰 갈림과 쿠키 메커니즘은 코치 시나리오로 유도. 다음 복습에서 무힌트로 stateless→쿠키→세션vs토큰→트레이드오프를 세우는지 점검. 압축에서 토큰의 대가(무효화)를 빠뜨린 비대칭을 다음에 메우는지도.)_
+
+**복습/자력 재구성 (2026-06-24, 첫 간격):** stateless→증명 필요→**쿠키(헤더에 티켓)**→**브라우저 자동 재제출**→**세션 vs 토큰("누가 기억하나" 축)**→**트레이드오프**까지 골격을 무힌트로 세움(장치 이름 "쿠키"와 `Set-Cookie`/`Cookie` 메커니즘만 가볍게 보강). **지난번 비대칭 해소:** 6-23엔 빠뜨렸던 **토큰의 무효화 약점**("지울 게 없어 탈취돼도 못 죽임")을 이번엔 스스로 도출. 단 거꾸로 **토큰의 강점(확장성)**을 빠뜨려 한 번 유도("서버 여러 대일 때 뭐가 편한가")→"아무 서버나 까서 검증 가능, 공유 수첩 불필요"로 자력 회수. → 트레이드오프 양 날(**확장성 ↔ 즉시 무효화, 둘 다 깔끔히는 못 가짐**) 완성. learning→understood, m2→3, feynman 통과.
 
 ## 연결 / 철학적 질문
 - **builds-on:** [HTTP](http.md) — HTTP가 stateless라는 **바로 그 성질**이 이 개념을 낳음. 해결책의 운반 수단도 HTTP 헤더(`Set-Cookie`/`Cookie`). HTTP의 트레이드오프 떡밥의 직접 후속.

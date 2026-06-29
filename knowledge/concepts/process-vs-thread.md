@@ -3,17 +3,17 @@ title: 프로세스 vs 스레드
 type: concept
 domain: os
 knowledge_type: model
-status: learning
-mastery: 2
+status: understood
+mastery: 3
 importance: 4
 review: auto
-feynman_passed: false
+feynman_passed: true
 created: 2026-06-23
-updated: 2026-06-23
+updated: 2026-06-24
 sources: []
 related: [concepts/call-stack.md, concepts/event-loop.md, concepts/promise-all-vs-sequential.md]
-tags: [os, process, thread, concurrency, parallelism, race-condition, single-thread, web-worker]
-review_due: 2026-06-24
+tags: [os, process, thread, concurrency, parallelism, race-condition, single-thread, web-worker, js-engine, runtime]
+review_due: 2026-06-27
 ---
 
 ## 한 줄 정의
@@ -52,6 +52,17 @@ B③: 70 씀           ← A의 150을 덮어씀
 ### 그래서 "JS 싱글 스레드"는 사실 선물
 JS 실행 스레드가 하나뿐 → 두 스레드가 같은 변수를 동시에 건드릴 일이 **구조적으로 없음** → **race condition·락을 거의 걱정 안 해도 됨.** 병렬 처리를 포기한 대가로 **동시성 버그를 면제**받은 것. 콜 스택이 하나인 건 단순한 제약이 아니라 **설계상의 트레이드오프**(단순함 ↔ CPU 병렬 불가).
 
+### 정밀하게: "하나의 콜 스택"을 가진 주체는 누구인가
+"JS는 콜 스택이 하나"는 줄임말이다. JS(=ECMAScript)는 **언어 사양**일 뿐이라, 언어가 콜 스택을 갖지는 않는다. 정확히는 **3층**이다:
+- **언어 (JS / ECMAScript):** 문법·규칙의 *명세*. 스레드·콜 스택 개념 자체가 없음.
+- **JS 엔진 (V8 · SpiderMonkey · JavaScriptCore):** 그 언어를 실제로 실행하는 프로그램. **네 코드를 실행하는 스레드가 1개**라서 **콜 스택도 1개.** (엔진 내부엔 GC·JIT 컴파일용 보조 스레드가 따로 있지만, *네 코드*를 돌리는 건 하나.)
+- **런타임 / 호스트 (브라우저 · Node.js):** 엔진을 **임베드(embed)** 하고, 그 위에 API(브라우저=`fetch`·DOM·`setTimeout` / Node=`fs`·`net`) + **이벤트 루프** + I/O를 떠맡는 **다른 스레드들**을 얹는다.
+
+**핵심 함정:** **이벤트 루프도, `setTimeout`도, `fetch`도 JS 엔진 안에 없다.** V8만 떼어내면 콜 스택·힙뿐 — 이벤트 루프조차 없다. 그건 **호스트가 제공**한다(브라우저, 또는 Node의 libuv). 그래서:
+- "JS는 싱글 스레드" = **호스트가 엔진의 *코드 실행*을 단일 스레드에서 돌린다 = 그 스레드의 콜 스택이 하나.**
+- 며칠째 본 "기다림을 떠맡는 다른 일꾼"([이벤트 루프](event-loop.md)) = **호스트가 가진 다른 스레드들.** 엔진의 그 한 스레드는 일을 던지고 손 털 뿐, 네트워크 대기는 호스트 몫.
+- 같은 V8이 Chrome에도 Node에도 들어간다 — **언어·엔진은 같고 호스트가 주는 API와 I/O 스레드만 다르다.**
+
 ## 내 파인만 설명 (직접 작성)
 _(2026-06-23 첫 접촉, 유도 추론 — "JS는 싱글 스레드"가 뭔지에서 출발)_
 - 프로세스가 OS한테 받는 것 → **"저장 공간"**(메모리) 자력 도출. 스레드 → 이미 쓰던 단어로 자력.
@@ -59,6 +70,8 @@ _(2026-06-23 첫 접촉, 유도 추론 — "JS는 싱글 스레드"가 뭔지에
 - 공유의 좋은 점=**효율성**, 위험=**"사이드이펙트"** 직감 → race condition 3단계 트레이스(`balance` 70)를 **혼자 따라가 최종 70·유실·비결정적(실행마다 다름)**까지 자력 도출. ("실행 시간/속도에 따라 달라진다"를 스스로 말함.)
 - **Web Worker 복사를 자력 연결:** "원본 공유하면 race condition 터지니까 일부러 복사·격리" — 며칠 전 떡밥("복사 vs 참조")을 스스로 해소.
 - _(주의: 첫 접촉=유도된 학습. 프로세스→스레드→공유→race의 사슬은 코치 시나리오로 유도. 다음 복습에서 "JS 싱글스레드=race 면제 선물"을 무힌트로 재구성하는지, 프로세스(격리)vs스레드(공유) 대비를 스스로 세우는지 점검.)_
+
+**복습/자력 재구성 (2026-06-24, 첫 간격):** 프로세스(격리 메모리) vs 스레드(공유 메모리)를 "메모리" 축으로 자력 분리. **"JS 싱글 스레드 = 콜 스택 하나"** 연결은 한 번 유도 후 자력. race condition 3단계 인터리빙을 **혼자 트레이스**해 balance=70(lost update)·**비결정적(70/150, 누가 ③에 먼저 도달하냐)**까지 도달(어제처럼 무힌트). capstone 자력: **"콜 스택 하나 → race 구조적 불가 → 선물, 대가는 병렬성(CPU 동시 계산) 포기, 동시성은 이벤트 루프로 유지."** → learning→understood, m2→3, feynman 통과. **부록(같은 세션, 사용자 자력 발의):** "콜 스택을 가진 주체가 누구냐(언어? 엔진? 호스트?)"를 스스로 물어 → **언어/엔진(V8)/호스트(브라우저·Node) 3층** + "이벤트 루프·setTimeout·fetch는 엔진이 아니라 호스트가 제공" 정밀화(위 「깊은 설명」에 박제). 페이지 claim을 사용자가 먼저 의심해 정밀화한 케이스 — mastery 4의 결을 보임.
 
 ## 연결 / 철학적 질문
 - **builds-under:** [콜 스택](call-stack.md) — "하나뿐이라 JS가 싱글 스레드"의 그 *스레드*가 이거. 콜 스택은 스레드마다 하나.

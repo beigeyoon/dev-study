@@ -4,16 +4,16 @@ type: concept
 domain: frontend
 knowledge_type: model
 status: understood
-mastery: 4
+mastery: 3
 importance: 4
 review: auto
 feynman_passed: true
 created: 2026-06-18
-updated: 2026-06-21
+updated: 2026-06-24
 sources: []
 related: [concepts/promise.md, concepts/async-await.md, concepts/event-loop.md, concepts/macrotask-queue.md, concepts/microtask-queue.md, concepts/call-stack.md, concepts/process-vs-thread.md]
 tags: [async, performance, javascript, promise, concurrency]
-review_due: 2026-06-24
+review_due: 2026-06-25
 ---
 
 ## 한 줄 정의
@@ -52,6 +52,8 @@ _(2026-06-18 세션, 추론으로 재구성)_
   - **버전 C(분리 호출 후 await) = 1초**를 자력 도출. 처음엔 "await 줄줄이 = 3초"로 오답 → A에선 `await`가 다음 줄 진입을 막아 fetchB가 t=1에야 호출되지만, C에선 세 줄 사이에 `await`가 없어 셋 다 t=0에 점화 → `await pB` 도달 시 pB는 이미 끝나 있음(추가 대기 0초)을 스스로 짚음.
   - **빈칸 자가 충전:** "병렬성은 `Promise.all`이 아니라 *await보다 먼저 다 호출해 in-flight로 만든 데서* 나온다." B와 C가 같은 1초인 건 같은 범인(호출 시점) 때문, `Promise.all`은 편한 집계기일 뿐.
   - **CPU 버전 = 3초**를 *암기가 아닌 원리로* 잡아냄("JS 스레드는 하나라 CPU 계산이 그 스레드를 점유"). 이어 핵심 비대칭을 자기 말로: **"네트워크 기다림은 CPU가 아니라 Web API가 처리하고 CPU는 완료 소식만 듣는다"** → 그래서 단일 스레드인데도 I/O는 겹치고 CPU는 못 겹침. **겹침은 실행이 아니라 기다림에서.** 전이: 진짜 계산 병렬 = Web Worker. → mastery 4 정당화, feynman 재통과.
+
+**⚠️ 회귀 (2026-06-24 복습):** 통합 앵커에서 "Promise.all 잘 모르겠음"으로 막힘 — m4였으나 자력 재구성 실패(6-21 이후 미복습 3일). **핵심 오해 노출:** 순차 `const a = await fetchA(); const b = await fetchB()`에서 **"fetchB도 이미 시작됐다"고 오답.** 교정: `await`가 다음 *줄 진입 자체*를 막아 fetchB는 fetchA가 끝난 t=1에야 호출됨(→총 2초). 회복 후 **사용자 스스로 심화 질문 2개를 발의:** ① "분리 호출 후 await 2개(`p1=fetchA();p2=fetchB();await p1;await p2`)가 Promise.all과 동일?" → 타이밍 동일 / 차이는 **에러(fail-fast·미await된 reject의 unhandled rejection)** 임을 같이 도출. ② "두 fetch 동시 출발 = Web API가 2개 도는 것?" → 네트워크 대기를 **호스트가 떠안아** JS 스레드 바깥에서 겹침을 자력 연결. → **재각인: 병렬성은 `Promise.all`도 await 개수도 아니라 "await 전에 다 호출해 in-flight로 만든 출발 시점"에서 나온다.** m4→3, review_due 1일 리셋(2026-06-25)으로 재굳힘.
 
 ## 연결 / 철학적 질문
 - **동시성 vs 병렬성:** 세 fetch는 **동시적(concurrent)** 이지만 **병렬적(parallel)** 이지 않다. JS 스레드는 하나. 겹침은 "실행"이 아니라 "기다림"에서 일어나고, 그 기다림은 일이 아니라 OS/하드웨어에 떠넘긴 예약이다.
