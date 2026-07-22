@@ -51,6 +51,18 @@ function codeFontSize(code) {
   return Math.max(26, Math.min(40, fit));
 }
 
+// 정답값을 한 줄에 담는 폰트 크기. 짧으면 186px 유지, 길면 폭에 맞춰 축소.
+// 한글(초/개 등)은 모노 폰트에서 폭이 ~2배라 가중 길이로 계산.
+function answerFontSize(answer) {
+  const weighted = [...String(answer)].reduce(
+    (w, ch) => w + (/[가-힣]/.test(ch) ? 2 : 1),
+    0
+  );
+  const avail = 1080 - 52 * 2; // 좌우 패딩 52
+  const fit = Math.floor(avail / (Math.max(1, weighted) * 0.62)); // 문자폭 ≈ 0.62em
+  return Math.max(64, Math.min(186, fit));
+}
+
 function lineNumbers(code) {
   const n = code.split('\n').length;
   return Array.from({ length: n }, (_, i) => i + 1).join('\n');
@@ -116,7 +128,7 @@ ${fontFace('CardKorean', fonts.korean)}
   letter-spacing:2px;color:rgba(17,19,24,.72);}
 .card--a .answer{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;
   padding:0 52px;font-family:${mono}ui-monospace,Menlo,monospace;font-weight:900;
-  font-size:186px;line-height:1;letter-spacing:6px;color:#111318;}
+  font-size:186px;line-height:1;letter-spacing:6px;color:#111318;white-space:nowrap;}
 .card--a .explain{border-top:1px solid rgba(0,0,0,.28);padding:44px 52px;
   display:flex;flex-direction:column;gap:26px;}
 .card--a .why{font-size:42px;line-height:1.5;color:#1a1c22;}
@@ -146,8 +158,9 @@ function qBody(card, handle) {
 }
 
 function aBody(card, handle) {
+  const asize = answerFontSize(card.answer);
   return `<div class="badge"><span>정답 / ANSWER</span></div>` +
-    `<div class="answer">${escapeHtml(card.answer)}</div>` +
+    `<div class="answer" style="font-size:${asize}px">${escapeHtml(card.answer)}</div>` +
     `<div class="explain"><div class="why">${escapeHtml(card.why)}</div>` +
     `<div class="takeaway">${emphasizeKeywords(card.takeaway)}</div></div>` +
     `<div class="foot"><span class="handle">${escapeHtml(handle)}</span></div>`;
