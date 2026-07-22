@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<style>
+  body{margin:0;background:#0b0c0f;}
+  a{color:#c2f542;text-decoration:none;}
+  a:hover{color:#d4ff6b;}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#0b0c0f;padding:56px;display:flex;flex-direction:column;gap:44px;font-family:-apple-system,'Apple SD Gothic Neo',sans-serif;color:#e8e9ec;">
+
+  <div style="display:flex;flex-direction:column;gap:16px;max-width:1000px;">
+    <div style="font:700 15px/1 ui-monospace,Menlo,monospace;letter-spacing:2px;color:#8a8f98;text-transform:uppercase;">Threads 학습 카드 · 방향 비교</div>
+    <h1 style="font:800 44px/1.15 -apple-system,'Apple SD Gothic Neo',sans-serif;letter-spacing:-1px;color:#f4f6f8;margin:0;">뚜렷이 다른 3개 방향 — 질문 + 정답 한 쌍씩</h1>
+    <p style="font:400 20px/1.6 -apple-system,'Apple SD Gothic Neo',sans-serif;color:#b6bac1;margin:0;">실제 1080×1350(4:5)로 렌더한 뒤 35%로 축소해 나란히 비교. 각 방향마다 <b style="color:#f4f6f8;">클로저(짧은 코드)</b> + <b style="color:#f4f6f8;">이벤트 루프(긴 코드, 줄바꿈 스트레스)</b> 두 케이스를 모두 렌더. 마음에 드는 방향을 <a href="#1a">1a</a>·<a href="#1b">1b</a>·<a href="#1c">1c</a> 로 골라주면 <span style="font-family:ui-monospace,monospace;color:#c2f542;">card-html.js</span> 에 반영할게.</p>
+  </div>
+
+  <section style="display:flex;flex-direction:column;gap:40px;">
+
+    <!-- ================= 2a — 최종 조합 (질문 A + 정답 C) ================= -->
+    <div id="2a" style="scroll-margin:40px;display:flex;flex-direction:column;gap:28px;padding:40px;background:#171a10;border:1px solid #3a4420;border-radius:24px;">
+      <div style="display:flex;flex-direction:column;gap:14px;max-width:960px;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font:800 22px/1 ui-monospace,Menlo,monospace;color:#0d0f13;background:#c2f542;padding:8px 14px;border-radius:10px;">2a</span>
+          <h2 style="font:800 34px/1.1 -apple-system,'Apple SD Gothic Neo',sans-serif;color:#f0f2f5;margin:0;">✔ 최종 조합 — 질문 A(IDE) + 정답 C(포스터)</h2>
+        </div>
+        <p style="font:500 20px/1.5 -apple-system,'Apple SD Gothic Neo',sans-serif;color:#d5d8de;margin:0;">질문은 <b style="color:#c2f542;">에디터 스크린샷</b>으로 코드에 집중, 정답은 <b style="color:#c2f542;">라임 필드로 색 반전</b>되며 리빌. 라임이 두 카드를 잇는 실이라 한 쌍으로 일관돼.</p>
+        <p style="font:400 17px/1.5 -apple-system,'Apple SD Gothic Neo',sans-serif;color:#8a8f98;margin:0;">accent는 라임 <span style="font-family:ui-monospace,monospace;color:#c2f542;">#c2f542</span> 하나로 통일. 아래 3개(1a/1b/1c)는 탐색 기록으로 남겨둠.</p>
+      </div>
+      <div style="display:flex;gap:44px;flex-wrap:wrap;">
+        <sc-for list="{{ F_items }}" as="c" hint-placeholder-count="2">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="font:600 15px/1 ui-monospace,Menlo,monospace;letter-spacing:1px;color:#9aa0aa;">{{ c.file }}</div>
+            <div style="display:flex;gap:16px;">
+              <!-- Q = A (IDE) -->
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="font:600 13px/1 ui-monospace,monospace;letter-spacing:1px;color:#6a6f78;">질문 카드 · A</div>
+                <div style="width:378px;height:473px;flex:none;border-radius:14px;overflow:hidden;box-shadow:0 18px 44px rgba(0,0,0,.5);position:relative;">
+                  <div style="position:absolute;top:0;left:0;width:1080px;height:1350px;transform:scale(0.35);transform-origin:top left;background:#0d1117;display:flex;flex-direction:column;">
+                    <div style="height:88px;flex:none;background:#161b22;border-bottom:1px solid #21262d;display:flex;align-items:center;gap:16px;padding:0 40px;">
+                      <div style="display:flex;gap:11px;"><span style="width:15px;height:15px;border-radius:50%;background:#ff5f56;"></span><span style="width:15px;height:15px;border-radius:50%;background:#ffbd2e;"></span><span style="width:15px;height:15px;border-radius:50%;background:#27c93f;"></span></div>
+                      <span style="font:500 26px/1 ui-monospace,Menlo,monospace;color:#8b949e;">{{ c.file }}</span>
+                      <span style="flex:1;"></span>
+                      <span style="font:800 24px/1 -apple-system,'Apple SD Gothic Neo',sans-serif;color:{{ c.accent }};background:{{ c.accentSoft }};padding:9px 20px;border-radius:8px;">{{ c.label }}</span>
+                    </div>
+                    <div style="flex:1;display:flex;flex-direction:column;padding:56px 60px;">
+                      <div style="display:flex;gap:28px;">
+                        <pre style="margin:0;font:{{ c.size }}px/1.7 ui-monospace,Menlo,monospace;color:#484f58;text-align:right;white-space:pre;">{{ c.numsEl }}</pre>
+                        <div>{{ c.codeEl }}</div>
+                      </div>
+                      <div style="height:56px;flex:none;"></div>
+                      <div style="font-weight:800;font-size:96px;line-height:1.05;letter-spacing:-2px;color:#f0f6fc;">{{ c.headline }}</div>
+                      <div style="flex:1;min-height:40px;"></div>
+                      <div style="display:flex;flex-direction:column;gap:12px;">
+                        <div style="font:500 30px/1.3 ui-monospace,Menlo,monospace;color:#8b949e;"><span style="color:{{ c.accent }};">❯ </span>정답은 댓글에서 — 먼저 맞혀봐</div>
+                        <div style="font:500 30px/1 ui-monospace,Menlo,monospace;color:#6e7681;">@yooni_dev</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- A = C (포스터 반전) -->
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="font:600 13px/1 ui-monospace,monospace;letter-spacing:1px;color:#6a6f78;">정답 카드 · C</div>
+                <div style="width:378px;height:473px;flex:none;border-radius:14px;overflow:hidden;box-shadow:0 18px 44px rgba(0,0,0,.5);position:relative;">
+                  <div style="position:absolute;top:0;left:0;width:1080px;height:1350px;transform:scale(0.35);transform-origin:top left;background:{{ c.accent }};color:#111318;display:flex;flex-direction:column;">
+                    <div style="border-bottom:1px solid rgba(0,0,0,.28);padding:44px 52px;display:flex;justify-content:space-between;align-items:center;">
+                      <span style="font:700 26px/1 ui-monospace,Menlo,monospace;letter-spacing:2px;color:rgba(17,19,24,.72);">정답 / ANSWER</span>
+                      <span style="font:800 44px/1 ui-monospace,Menlo,monospace;color:rgba(17,19,24,.32);">{{ c.idx }}</span>
+                    </div>
+                    <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:0 52px;">
+                      <div style="font-family:ui-monospace,Menlo,monospace;font-weight:900;font-size:186px;line-height:1;letter-spacing:6px;color:#111318;text-align:center;">{{ c.answer }}</div>
+                    </div>
+                    <div style="border-top:1px solid rgba(0,0,0,.28);padding:44px 52px;display:flex;flex-direction:column;gap:26px;">
+                      <div style="font-size:42px;line-height:1.5;color:#1a1c22;">{{ c.why }}</div>
+                      <div style="font-weight:800;font-size:56px;line-height:1.35;letter-spacing:-1px;color:#111318;">{{ c.takeawayEl }}</div>
+                    </div>
+                    <div style="border-top:1px solid rgba(0,0,0,.28);padding:30px 52px;">
+                      <span style="font:700 26px/1 ui-monospace,Menlo,monospace;color:rgba(17,19,24,.62);">@yooni_dev</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- ================= 1a — IDE / 콘솔 ================= -->
+    <div id="1a" style="scroll-margin:40px;display:flex;flex-direction:column;gap:28px;padding:40px;background:#131519;border:1px solid #24272e;border-radius:24px;">
+      <div style="display:flex;flex-direction:column;gap:14px;max-width:960px;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font:800 22px/1 ui-monospace,Menlo,monospace;color:#0d0f13;background:#c2f542;padding:8px 14px;border-radius:10px;">1a</span>
+          <h2 style="font:800 34px/1.1 -apple-system,'Apple SD Gothic Neo',sans-serif;color:#f0f2f5;margin:0;">IDE · 콘솔</h2>
+        </div>
+        <p style="font:500 20px/1.5 -apple-system,'Apple SD Gothic Neo',sans-serif;color:#d5d8de;margin:0;">컨셉 — “내 에디터를 그대로 스크린샷한 것 같은” 카드. 파일 탭·라인번호·풀 신택스 하이라이트, 정답은 <span style="font-family:ui-monospace,monospace;color:#c2f542;">node</span> 실행 콘솔로 리빌.</p>
+        <p style="font:400 17px/1.5 -apple-system,'Apple SD Gothic Neo',sans-serif;color:#8a8f98;margin:0;">왜 멈추나 — 개발자 피드에서 “진짜 코드 스크린샷”은 반사적으로 읽힌다. 도구를 흉내내 신뢰가 즉시 서고, 콘솔 리빌이 “돌려봤다”는 인증처럼 보여 저장·공유를 부른다.</p>
+      </div>
+      <div style="display:flex;gap:44px;flex-wrap:wrap;">
+        <sc-for list="{{ A_items }}" as="c" hint-placeholder-count="2">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="font:600 15px/1 ui-monospace,Menlo,monospace;letter-spacing:1px;color:#9aa0aa;">{{ c.file }}</div>
+            <div style="display:flex;gap:16px;">
+              <!-- Q -->
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="font:600 13px/1 ui-monospace,monospace;letter-spacing:1px;color:#6a6f78;">질문 카드</div>
+                <div style="width:378px;height:473px;flex:none;border-radius:14px;overflow:hidden;box-shadow:0 18px 44px rgba(0,0,0,.5);position:relative;">
+                  <div style="position:absolute;top:0;left:0;width:1080px;height:1350px;transform:scale(0.35);transform-origin:top left;background:#0d1117;display:flex;flex-direction:column;">
+                    <div style="height:88px;flex:none;background:#161b22;border-bottom:1px solid #21262d;display:flex;align-items:center;gap:16px;padding:0 40px;">
+                      <div style="display:flex;gap:11px;"><span style="width:15px;height:15px;border-radius:50%;background:#ff5f56;"></span><span style="width:15px;height:15px;border-radius:50%;background:#ffbd2e;"></span><span style="width:15px;height:15px;border-radius:50%;background:#27c93f;"></span></div>
+                      <span style="font:500 26px/1 ui-monospace,Menlo,monospace;color:#8b949e;">{{ c.file }}</span>
+                      <span style="flex:1;"></span>
+                      <span style="font:800 24px/1 -apple-system,'Apple SD Gothic Neo',sans-serif;color:{{ c.accent }};background:{{ c.accentSoft }};padding:9px 20px;border-radius:8px;">{{ c.label }}</span>
+                    </div>
+                    <div style="flex:1;display:flex;flex-direction:column;padding:56px 60px;">
+                      <div style="display:flex;gap:28px;">
+                        <pre style="margin:0;font:{{ c.size }}px/1.7 ui-monospace,Menlo,monospace;color:#484f58;text-align:right;white-space:pre;">{{ c.numsEl }}</pre>
+                        <div>{{ c.codeEl }}</div>
+                      </div>
+                      <div style="height:56px;flex:none;"></div>
+                      <div style="font-weight:800;font-size:96px;line-height:1.05;letter-spacing:-2px;color:#f0f6fc;">{{ c.headline }}</div>
+                      <div style="flex:1;min-height:40px;"></div>
+                      <div style="display:flex;flex-direction:column;gap:12px;">
+                        <div style="font:500 30px/1.3 ui-monospace,Menlo,monospace;color:#8b949e;"><span style="color:{{ c.accent }};">❯ </span>정답은 댓글에서 — 먼저 맞혀봐</div>
+                        <div style="font:500 30px/1 ui-monospace,Menlo,monospace;color:#6e7681;">@yooni_dev</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- A -->
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="font:600 13px/1 ui-monospace,monospace;letter-spacing:1px;color:#6a6f78;">정답 카드</div>
+                <div style="width:378px;height:473px;flex:none;border-radius:14px;overflow:hidden;box-shadow:0 18px 44px rgba(0,0,0,.5);position:relative;">
+                  <div style="position:absolute;top:0;left:0;width:1080px;height:1350px;transform:scale(0.35);transform-origin:top left;background:#0d1117;display:flex;flex-direction:column;">
+                    <div style="height:88px;flex:none;background:#161b22;border-bottom:1px solid #21262d;display:flex;align-items:center;gap:16px;padding:0 40px;">
+                      <div style="display:flex;gap:11px;"><span style="width:15px;height:15px;border-radius:50%;background:#ff5f56;"></span><span style="width:15px;height:15px;border-radius:50%;background:#ffbd2e;"></span><span style="width:15px;height:15px;border-radius:50%;background:#27c93f;"></span></div>
+                      <span style="font:500 26px/1 ui-monospace,Menlo,monospace;color:#8b949e;">node {{ c.file }}</span>
+                      <span style="flex:1;"></span>
+                      <span style="font:800 24px/1 -apple-system,'Apple SD Gothic Neo',sans-serif;color:{{ c.accent }};background:{{ c.accentSoft }};padding:9px 20px;border-radius:8px;">정답</span>
+                    </div>
+                    <div style="flex:1;display:flex;flex-direction:column;padding:56px 60px;">
+                      <div style="font:500 32px/1 ui-monospace,Menlo,monospace;color:#8b949e;"><span style="color:{{ c.accent }};">❯</span> node {{ c.file }}</div>
+                      <div style="margin-top:24px;font-family:ui-monospace,Menlo,monospace;font-weight:800;font-size:184px;line-height:1;letter-spacing:6px;color:{{ c.accent }};">{{ c.answer }}</div>
+                      <div style="margin-top:54px;font-size:44px;line-height:1.6;color:#adbac7;">{{ c.why }}</div>
+                      <div style="flex:1;min-height:40px;"></div>
+                      <div style="font-weight:800;font-size:60px;line-height:1.32;letter-spacing:-1px;color:#f0f6fc;">{{ c.takeawayEl }}</div>
+                      <div style="margin-top:32px;font:500 30px/1 ui-monospace,Menlo,monospace;color:#6e7681;">@yooni_dev</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- ================= 1b — 에디토리얼 지면 ================= -->
+    <div id="1b" style="scroll-margin:40px;display:flex;flex-direction:column;gap:28px;padding:40px;background:#131519;border:1px solid #24272e;border-radius:24px;">
+      <div style="display:flex;flex-direction:column;gap:14px;max-width:960px;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font:800 22px/1 ui-monospace,Menlo,monospace;color:#0d0f13;background:#c2f542;padding:8px 14px;border-radius:10px;">1b</span>
+          <h2 style="font:800 34px/1.1 -apple-system,'Apple SD Gothic Neo',sans-serif;color:#f0f2f5;margin:0;">에디토리얼 지면</h2>
+        </div>
+        <p style="font:500 20px/1.5 -apple-system,'Apple SD Gothic Neo',sans-serif;color:#d5d8de;margin:0;">컨셉 — 밝은 종이 위의 기술 매거진. 강한 타이포 위계 + 절제된 하이라이터 마킹. 코드는 얇은 프레임 안에 차분하게.</p>
+        <p style="font:400 17px/1.5 -apple-system,'Apple SD Gothic Neo',sans-serif;color:#8a8f98;margin:0;">왜 멈추나 — 다크 일색인 개발 피드에서 밝은 지면은 물리적으로 튄다. “대충 만든 템플릿”이 아니라 편집된 지면처럼 보여 진지하게 읽고 저장하게 만든다.</p>
+      </div>
+      <div style="display:flex;gap:44px;flex-wrap:wrap;">
+        <sc-for list="{{ B_items }}" as="c" hint-placeholder-count="2">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="font:600 15px/1 ui-monospace,Menlo,monospace;letter-spacing:1px;color:#9aa0aa;">{{ c.file }}</div>
+            <div style="display:flex;gap:16px;">
+              <!-- Q -->
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="font:600 13px/1 ui-monospace,monospace;letter-spacing:1px;color:#6a6f78;">질문 카드</div>
+                <div style="width:378px;height:473px;flex:none;border-radius:14px;overflow:hidden;box-shadow:0 18px 44px rgba(0,0,0,.5);position:relative;">
+                  <div style="position:absolute;top:0;left:0;width:1080px;height:1350px;transform:scale(0.35);transform-origin:top left;box-sizing:border-box;background:#f7f5f0;color:#26221c;display:flex;flex-direction:column;padding:76px 72px;font-family:-apple-system,'Apple SD Gothic Neo',sans-serif;">
+                    <div style="display:flex;align-items:center;gap:16px;">
+                      <span style="width:24px;height:24px;border-radius:4px;background:{{ c.accent }};"></span>
+                      <span style="font:700 32px/1 -apple-system,'Apple SD Gothic Neo',sans-serif;letter-spacing:1px;color:#6a635a;">{{ c.label }}</span>
+                    </div>
+                    <div style="height:2px;background:#e2ddd2;margin:32px 0;"></div>
+                    <div style="border:1.5px solid #ddd7ca;border-radius:16px;background:#f1ede4;padding:40px 44px;">{{ c.codeEl }}</div>
+                    <div style="margin-top:52px;font-weight:800;font-size:104px;line-height:1.02;letter-spacing:-3px;color:#1c1a17;">{{ c.headline }}</div>
+                    <div style="flex:1;min-height:30px;"></div>
+                    <div style="height:2px;background:#e2ddd2;margin-bottom:28px;"></div>
+                    <div style="display:flex;flex-direction:column;gap:12px;">
+                      <div style="font:500 34px/1.4 -apple-system,'Apple SD Gothic Neo',sans-serif;color:#8a8378;">정답은 댓글에서 — 먼저 맞혀봐</div>
+                      <div style="font:600 30px/1 ui-monospace,Menlo,monospace;color:#b0a999;">@yooni_dev</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- A -->
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="font:600 13px/1 ui-monospace,monospace;letter-spacing:1px;color:#6a6f78;">정답 카드</div>
+                <div style="width:378px;height:473px;flex:none;border-radius:14px;overflow:hidden;box-shadow:0 18px 44px rgba(0,0,0,.5);position:relative;">
+                  <div style="position:absolute;top:0;left:0;width:1080px;height:1350px;transform:scale(0.35);transform-origin:top left;box-sizing:border-box;background:#f7f5f0;color:#26221c;display:flex;flex-direction:column;padding:76px 72px;font-family:-apple-system,'Apple SD Gothic Neo',sans-serif;">
+                    <div style="display:flex;align-items:center;gap:16px;">
+                      <span style="width:24px;height:24px;border-radius:4px;background:{{ c.accent }};"></span>
+                      <span style="font:700 32px/1 -apple-system,'Apple SD Gothic Neo',sans-serif;letter-spacing:1px;color:#6a635a;">정답</span>
+                    </div>
+                    <div style="height:2px;background:#e2ddd2;margin:32px 0;"></div>
+                    <div style="margin-top:8px;">{{ c.answerEl }}</div>
+                    <div style="margin-top:48px;font-size:46px;line-height:1.6;color:#4a453d;">{{ c.why }}</div>
+                    <div style="flex:1;min-height:30px;"></div>
+                    <div style="font-weight:800;font-size:62px;line-height:1.34;letter-spacing:-1px;color:#1c1a17;">{{ c.takeawayEl }}</div>
+                    <div style="height:2px;background:#e2ddd2;margin:28px 0;"></div>
+                    <div style="font:600 30px/1 ui-monospace,Menlo,monospace;color:#b0a999;">@yooni_dev</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- ================= 1c — 브루탈리스트 포스터 ================= -->
+    <div id="1c" style="scroll-margin:40px;display:flex;flex-direction:column;gap:28px;padding:40px;background:#131519;border:1px solid #24272e;border-radius:24px;">
+      <div style="display:flex;flex-direction:column;gap:14px;max-width:960px;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="font:800 22px/1 ui-monospace,Menlo,monospace;color:#0d0f13;background:#c2f542;padding:8px 14px;border-radius:10px;">1c</span>
+          <h2 style="font:800 34px/1.1 -apple-system,'Apple SD Gothic Neo',sans-serif;color:#f0f2f5;margin:0;">브루탈리스트 포스터</h2>
+        </div>
+        <p style="font:500 20px/1.5 -apple-system,'Apple SD Gothic Neo',sans-serif;color:#d5d8de;margin:0;">컨셉 — 그리드로 잘린 존, 거대한 타이포, 색 반전. 질문은 검정 위 네온 헤드라인, 정답은 <b style="color:#f4f6f8;">화면 전체가 네온 필드</b>로 뒤집히는 리빌.</p>
+        <p style="font:400 17px/1.5 -apple-system,'Apple SD Gothic Neo',sans-serif;color:#8a8f98;margin:0;">왜 멈추나 — 스크롤 속에서 순수한 그래픽 강도로 브레이크를 건다. 정답 카드의 색 반전은 “한 쌍”이라는 인상을 각인시키고, 시리즈로 쌓이면 즉시 알아보는 브랜드가 된다.</p>
+      </div>
+      <div style="display:flex;gap:44px;flex-wrap:wrap;">
+        <sc-for list="{{ C_items }}" as="c" hint-placeholder-count="2">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="font:600 15px/1 ui-monospace,Menlo,monospace;letter-spacing:1px;color:#9aa0aa;">{{ c.file }}</div>
+            <div style="display:flex;gap:16px;">
+              <!-- Q -->
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="font:600 13px/1 ui-monospace,monospace;letter-spacing:1px;color:#6a6f78;">질문 카드</div>
+                <div style="width:378px;height:473px;flex:none;border-radius:14px;overflow:hidden;box-shadow:0 18px 44px rgba(0,0,0,.5);position:relative;">
+                  <div style="position:absolute;top:0;left:0;width:1080px;height:1350px;transform:scale(0.35);transform-origin:top left;background:#111318;color:#e8e9ec;display:flex;flex-direction:column;">
+                    <div style="border-bottom:1px solid #262a31;padding:44px 52px;display:flex;justify-content:space-between;align-items:center;">
+                      <span style="font:700 26px/1 ui-monospace,Menlo,monospace;letter-spacing:2px;color:{{ c.accent }};">{{ c.label }}</span>
+                      <span style="font:800 44px/1 ui-monospace,Menlo,monospace;color:#33383f;">{{ c.idx }}</span>
+                    </div>
+                    <div style="border-bottom:1px solid #262a31;padding:48px 52px;">{{ c.codeEl }}</div>
+                    <div style="flex:1;display:flex;align-items:flex-end;padding:52px 52px;">
+                      <div style="font-weight:900;font-size:112px;line-height:0.98;letter-spacing:-3px;color:{{ c.accent }};">{{ c.headline }}</div>
+                    </div>
+                    <div style="border-top:1px solid #262a31;padding:36px 52px;display:flex;justify-content:space-between;align-items:center;">
+                      <span style="font:500 28px/1 ui-monospace,Menlo,monospace;color:#8a8f98;">정답은 댓글에서 — 먼저 맞혀봐</span>
+                      <span style="font:700 28px/1 ui-monospace,Menlo,monospace;color:{{ c.accent }};">@yooni_dev</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- A -->
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="font:600 13px/1 ui-monospace,monospace;letter-spacing:1px;color:#6a6f78;">정답 카드</div>
+                <div style="width:378px;height:473px;flex:none;border-radius:14px;overflow:hidden;box-shadow:0 18px 44px rgba(0,0,0,.5);position:relative;">
+                  <div style="position:absolute;top:0;left:0;width:1080px;height:1350px;transform:scale(0.35);transform-origin:top left;background:{{ c.accent }};color:#111318;display:flex;flex-direction:column;">
+                    <div style="border-bottom:1px solid rgba(0,0,0,.28);padding:44px 52px;display:flex;justify-content:space-between;align-items:center;">
+                      <span style="font:700 26px/1 ui-monospace,Menlo,monospace;letter-spacing:2px;color:rgba(17,19,24,.72);">정답 / ANSWER</span>
+                      <span style="font:800 44px/1 ui-monospace,Menlo,monospace;color:rgba(17,19,24,.32);">{{ c.idx }}</span>
+                    </div>
+                    <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:0 52px;">
+                      <div style="font-family:ui-monospace,Menlo,monospace;font-weight:900;font-size:186px;line-height:1;letter-spacing:6px;color:#111318;text-align:center;">{{ c.answer }}</div>
+                    </div>
+                    <div style="border-top:1px solid rgba(0,0,0,.28);padding:44px 52px;display:flex;flex-direction:column;gap:26px;">
+                      <div style="font-size:42px;line-height:1.5;color:#1a1c22;">{{ c.why }}</div>
+                      <div style="font-weight:800;font-size:56px;line-height:1.35;letter-spacing:-1px;color:#111318;">{{ c.takeawayEl }}</div>
+                    </div>
+                    <div style="border-top:1px solid rgba(0,0,0,.28);padding:30px 52px;">
+                      <span style="font:700 26px/1 ui-monospace,Menlo,monospace;color:rgba(17,19,24,.62);">@yooni_dev</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const KW = new Set('function let const var return if else for while await async new class of in'.split(' '));
+    const tokenize = (code) => {
+      const re = /(\/\/[^\n]*)|('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")|(\b\d+\b)|([A-Za-z_$][A-Za-z0-9_$]*)|(\s+)|([^\sA-Za-z0-9_$]+)/g;
+      const out = []; let m;
+      while ((m = re.exec(code))) {
+        if (m[1]) out.push(['comment', m[1]]);
+        else if (m[2]) out.push(['str', m[2]]);
+        else if (m[3]) out.push(['num', m[3]]);
+        else if (m[4]) { const rest = code.slice(re.lastIndex); out.push([KW.has(m[4]) ? 'kw' : (/^\s*\(/.test(rest) ? 'fn' : 'id'), m[4]]); }
+        else if (m[5]) out.push(['ws', m[5]]);
+        else out.push(['punc', m[6]]);
+      }
+      return out;
+    };
+    const codeEl = (code, pal, size) => React.createElement('div', {
+      style: { fontFamily: 'ui-monospace,SFMono-Regular,Menlo,Consolas,monospace', fontSize: size + 'px', lineHeight: 1.7, whiteSpace: 'pre', color: pal.base, fontVariantLigatures: 'none' }
+    }, tokenize(code).map((t, i) => t[0] === 'ws' ? t[1] : React.createElement('span', { key: i, style: { color: pal[t[0]] || pal.base } }, t[1])));
+    const numsEl = (code) => { const n = code.split('\n').length; let s = ''; for (let i = 1; i <= n; i++) s += i + (i < n ? '\n' : ''); return s; };
+    const emph = (md, mode, color) => {
+      const parts = String(md).split(/(\*\*[^*]+\*\*)/g);
+      return React.createElement(React.Fragment, null, parts.map((p, i) => {
+        const mm = p.match(/^\*\*([^*]+)\*\*$/);
+        if (!mm) return p;
+        const w = mm[1];
+        if (mode === 'marker') return React.createElement('span', { key: i, style: { background: 'linear-gradient(transparent 58%,' + color + ' 58%)', padding: '0 4px' } }, w);
+        if (mode === 'invert') return React.createElement('span', { key: i, style: { background: '#111318', color: color, padding: '2px 14px', borderRadius: '4px', whiteSpace: 'nowrap' } }, w);
+        return React.createElement('span', { key: i, style: { color: color } }, w);
+      }));
+    };
+    const DARK = { '#c2f542': '#5f7010', '#3ff0e0': '#0a857a' };
+    const CARDS = [
+      { file: 'closure.js', idx: '01', label: 'JS · 클로저', accent: '#c2f542', size: 40,
+        code: "function makeCounter() {\n  let count = 0;\n  return () => ++count;\n}\nconst a = makeCounter();\nconst b = makeCounter();\nconsole.log(a(), a(), b());",
+        headline: '출력은? 🔥', answer: '1 2 1',
+        why: 'a·b는 makeCounter의 다른 호출 → 각자 다른 count(배낭). a는 두 번 눌러 1→2, b는 새 count라 1.',
+        takeaway: '배낭은 **함수**가 아니라 **호출**이 갖는다' },
+      { file: 'event-loop.js', idx: '02', label: 'JS · 이벤트 루프', accent: '#c2f542', size: 28,
+        code: "console.log('A');\nsetTimeout(() => console.log('B'), 0);\nPromise.resolve().then(() => console.log('C'));\nconsole.log('D');",
+        headline: '출력 순서는? 🔥', answer: 'A D C B',
+        why: '동기(A·D) 먼저 → 콜스택 비면 마이크로태스크(C) → 그다음 매크로태스크(B). setTimeout 0도 큐에서 대기.',
+        takeaway: '마이크로태스크가 **매크로태스크보다 먼저** 비워진다' },
+    ];
+    const palA = (a) => ({ base: '#c9d1d9', kw: a, str: '#a5d6ff', num: '#79c0ff', fn: '#d2a8ff', comment: '#8b949e', id: '#c9d1d9', punc: '#8b949e' });
+    const palB = (a) => { const d = DARK[a]; return { base: '#3a352d', kw: d, str: '#9a6b00', num: '#9a6b00', fn: '#26221c', comment: '#a8a094', id: '#3a352d', punc: '#8f8776' }; };
+    const palC = (a) => ({ base: '#e8e9ec', kw: a, str: '#8a8f98', num: '#8a8f98', fn: '#e8e9ec', comment: '#6a6f78', id: '#e8e9ec', punc: '#9aa0aa' });
+    const base = (c) => ({ file: c.file, idx: c.idx, label: c.label, accent: c.accent, accentSoft: c.accent + '22', size: c.size, headline: c.headline, answer: c.answer, why: c.why });
+    const A_items = CARDS.map((c) => ({ ...base(c), codeEl: codeEl(c.code, palA(c.accent), c.size), numsEl: numsEl(c.code), takeawayEl: emph(c.takeaway, 'color', c.accent) }));
+    const B_items = CARDS.map((c) => ({ ...base(c), codeEl: codeEl(c.code, palB(c.accent), c.size), takeawayEl: emph(c.takeaway, 'marker', c.accent),
+      answerEl: React.createElement('span', { style: { fontFamily: 'ui-monospace,Menlo,monospace', fontWeight: 800, fontSize: '150px', letterSpacing: '4px', color: '#1c1a17', lineHeight: 1, background: 'linear-gradient(transparent 62%,' + c.accent + ' 62%)', padding: '0 10px' } }, c.answer) }));
+    const C_items = CARDS.map((c) => ({ ...base(c), codeEl: codeEl(c.code, palC(c.accent), c.size), takeawayEl: emph(c.takeaway, 'invert', c.accent) }));
+    const F_items = CARDS.map((c) => ({ ...base(c), codeEl: codeEl(c.code, palA(c.accent), c.size), numsEl: numsEl(c.code), takeawayEl: emph(c.takeaway, 'invert', c.accent) }));
+    return { A_items, B_items, C_items, F_items };
+  }
+}
+</script>
+</body>
+</html>

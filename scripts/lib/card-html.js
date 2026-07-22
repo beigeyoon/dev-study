@@ -1,6 +1,6 @@
 export const ACCENTS = {
   lime: '#c2f542',
-  cyan: '#3ff0e0',
+  cyan: '#3ff0e0',   // UI 미사용이나 override 테스트 위해 유지
   magenta: '#ff5db1',
   orange: '#ff9f45',
 };
@@ -11,16 +11,28 @@ export function escapeHtml(s) {
   ));
 }
 
-// 코드의 JS 키워드를 네온 span으로. 그 외 문자는 이스케이프.
+const KW = new Set(
+  'function let const var return if else for while await async new class of in'.split(' ')
+);
+
+// 키워드는 .kw, str/num/fn/com만 태깅, 식별자·구두점·공백은 이스케이프만.
 export function highlightJs(code) {
-  const escaped = escapeHtml(code);
-  return escaped.replace(
-    /\b(function|let|const|var|return|if|else|for|while|await|async|new|class|of|in)\b/g,
-    '<span class="kw">$1</span>'
-  );
+  const re = /(\/\/[^\n]*)|('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")|(\b\d+\b)|([A-Za-z_$][A-Za-z0-9_$]*)|(\s+)|([^\sA-Za-z0-9_$]+)/g;
+  let out = '', m;
+  while ((m = re.exec(code))) {
+    if (m[1]) out += `<span class="com">${escapeHtml(m[1])}</span>`;
+    else if (m[2]) out += `<span class="str">${escapeHtml(m[2])}</span>`;
+    else if (m[3]) out += `<span class="num">${escapeHtml(m[3])}</span>`;
+    else if (m[4]) {
+      const rest = code.slice(re.lastIndex);
+      if (KW.has(m[4])) out += `<span class="kw">${escapeHtml(m[4])}</span>`;
+      else if (/^\s*\(/.test(rest)) out += `<span class="fn">${escapeHtml(m[4])}</span>`;
+      else out += escapeHtml(m[4]);
+    } else out += escapeHtml(m[5] || m[6]);
+  }
+  return out;
 }
 
-// "**x**" → <span class="hl">x</span>, 그 외 텍스트는 이스케이프.
 export function emphasizeKeywords(md) {
   return String(md)
     .split(/(\*\*[^*]+\*\*)/g)
@@ -29,6 +41,24 @@ export function emphasizeKeywords(md) {
       return m ? `<span class="hl">${escapeHtml(m[1])}</span>` : escapeHtml(part);
     })
     .join('');
+}
+
+// 라인번호 거터(폭 ~60) + 본문 패딩(120) + gap(28) 감안한 사용 폭.
+function codeFontSize(code) {
+  const maxLen = Math.max(1, ...code.split('\n').map((l) => l.length));
+  const avail = 1080 - 120 - 28 - 60;
+  const fit = Math.floor(avail / (maxLen * 0.6)); // 모노 문자폭 ≈ 0.6em
+  return Math.max(26, Math.min(40, fit));
+}
+
+function lineNumbers(code) {
+  const n = code.split('\n').length;
+  return Array.from({ length: n }, (_, i) => i + 1).join('\n');
+}
+
+function fileName(card) {
+  const base = String(card.concept || card.id || 'snippet').split('/').pop().replace(/\.md$/, '');
+  return `${base}.${card.codeLang || 'js'}`;
 }
 
 function fontFace(name, url) {
@@ -44,53 +74,94 @@ function cardCss(accentHex, fonts = {}) {
 ${fontFace('CardHeadline', fonts.headline)}
 ${fontFace('CardMono', fonts.mono)}
 ${fontFace('CardKorean', fonts.korean)}
-.card{width:1080px;height:1350px;background:linear-gradient(160deg,#1d1440,#150e30);
-  color:#e9e4ff;font-family:${kor}-apple-system,'Apple SD Gothic Neo',sans-serif;
-  padding:88px 76px;display:flex;flex-direction:column;overflow:hidden;}
-.badge{align-self:flex-start;font-weight:900;font-size:30px;letter-spacing:2px;
-  padding:12px 30px;border-radius:50px;background:${accentHex}26;color:${accentHex};
-  font-family:${head}-apple-system,sans-serif;}
-.code{margin-top:52px;background:#ffffff0f;border:1px solid ${accentHex}30;border-radius:28px;
-  padding:44px 48px;font-family:${mono}ui-monospace,Menlo,monospace;font-size:40px;
-  line-height:1.6;white-space:pre-wrap;word-break:break-word;color:#e9e4ff;}
-.code .kw{color:${accentHex};}
-.headline{margin-top:auto;font-family:${head}-apple-system,sans-serif;font-weight:900;
-  font-size:104px;line-height:1.04;letter-spacing:-2px;color:#fff;}
-.answer{margin-top:20px;font-family:${mono}ui-monospace,Menlo,monospace;font-weight:900;
-  font-size:196px;letter-spacing:6px;color:${accentHex};}
-.why{margin-top:40px;font-size:46px;line-height:1.6;color:#e9e4ff;}
-.takeaway{margin-top:auto;font-family:${head}-apple-system,sans-serif;font-weight:900;
-  font-size:66px;line-height:1.3;letter-spacing:-1px;color:#fff;}
-.takeaway .hl{color:${accentHex};}
-.sub{margin-top:30px;font-size:36px;color:#8b7fd6;}
-.handle{margin-top:18px;font-size:30px;color:#6b5fb0;}
+.card{width:1080px;height:1350px;display:flex;flex-direction:column;overflow:hidden;
+  font-family:${kor}-apple-system,'Apple SD Gothic Neo',sans-serif;}
+
+/* ── 질문 카드 · IDE ── */
+.card--q{background:#0d1117;color:#c9d1d9;}
+.card--q .bar{height:88px;flex:none;background:#161b22;border-bottom:1px solid #21262d;
+  display:flex;align-items:center;gap:16px;padding:0 40px;}
+.card--q .dots{display:flex;gap:11px;}
+.card--q .dots i{width:15px;height:15px;border-radius:50%;}
+.card--q .dots i:nth-child(1){background:#ff5f56;}
+.card--q .dots i:nth-child(2){background:#ffbd2e;}
+.card--q .dots i:nth-child(3){background:#27c93f;}
+.card--q .file{font-family:${mono}ui-monospace,Menlo,monospace;font-size:26px;color:#8b949e;}
+.card--q .badge{margin-left:auto;font-family:${head}-apple-system,sans-serif;font-weight:800;
+  font-size:24px;color:${accentHex};background:${accentHex}22;padding:9px 20px;border-radius:8px;}
+.card--q .body{flex:1;display:flex;flex-direction:column;padding:56px 60px;}
+.card--q .code-row{display:flex;gap:28px;}
+.card--q .gutter{font-family:${mono}ui-monospace,Menlo,monospace;line-height:1.7;
+  color:#484f58;text-align:right;white-space:pre;}
+.card--q .code{font-family:${mono}ui-monospace,Menlo,monospace;line-height:1.7;
+  white-space:pre;color:#c9d1d9;font-variant-ligatures:none;}
+.card--q .code .kw{color:${accentHex};}
+.card--q .code .str{color:#a5d6ff;}
+.card--q .code .num{color:#79c0ff;}
+.card--q .code .fn{color:#d2a8ff;}
+.card--q .code .com{color:#8b949e;}
+.card--q .headline{margin-top:56px;font-family:${head}-apple-system,sans-serif;
+  font-weight:800;font-size:96px;line-height:1.05;letter-spacing:-2px;color:#f0f6fc;}
+.card--q .spacer{flex:1;min-height:40px;}
+.card--q .foot{display:flex;flex-direction:column;gap:12px;}
+.card--q .sub{font-family:${mono}ui-monospace,Menlo,monospace;font-size:30px;color:#8b949e;}
+.card--q .sub .caret{color:${accentHex};}
+.card--q .handle{font-family:${mono}ui-monospace,Menlo,monospace;font-size:30px;color:#6e7681;}
+
+/* ── 정답 카드 · 포스터 반전 ── */
+.card--a{background:${accentHex};color:#111318;}
+.card--a .badge{display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid rgba(0,0,0,.28);padding:44px 52px;
+  font-family:${mono}ui-monospace,Menlo,monospace;font-weight:700;font-size:26px;
+  letter-spacing:2px;color:rgba(17,19,24,.72);}
+.card--a .answer{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:0 52px;font-family:${mono}ui-monospace,Menlo,monospace;font-weight:900;
+  font-size:186px;line-height:1;letter-spacing:6px;color:#111318;}
+.card--a .explain{border-top:1px solid rgba(0,0,0,.28);padding:44px 52px;
+  display:flex;flex-direction:column;gap:26px;}
+.card--a .why{font-size:42px;line-height:1.5;color:#1a1c22;}
+.card--a .takeaway{font-family:${head}-apple-system,sans-serif;font-weight:800;font-size:56px;
+  line-height:1.35;letter-spacing:-1px;color:#111318;}
+.card--a .takeaway .hl{background:#111318;color:${accentHex};padding:2px 14px;
+  border-radius:4px;white-space:nowrap;}
+.card--a .foot{border-top:1px solid rgba(0,0,0,.28);padding:30px 52px;}
+.card--a .handle{font-family:${mono}ui-monospace,Menlo,monospace;font-weight:700;
+  font-size:26px;color:rgba(17,19,24,.62);}
 `;
 }
 
 function qBody(card, handle) {
-  return `<div class="badge">${escapeHtml(card.label)}</div>
-<div class="code">${highlightJs(card.code)}</div>
-<div class="headline">${escapeHtml(card.headline)}</div>
-<div class="sub">정답은 댓글에서 — 먼저 맞혀봐</div>
-<div class="handle">${escapeHtml(handle)}</div>`;
+  const size = codeFontSize(card.code);
+  return `<div class="bar"><span class="dots"><i></i><i></i><i></i></span>` +
+    `<span class="file">${escapeHtml(fileName(card))}</span>` +
+    `<span class="badge">${escapeHtml(card.label)}</span></div>` +
+    `<div class="body"><div class="code-row" style="font-size:${size}px">` +
+    `<pre class="gutter">${lineNumbers(card.code)}</pre>` +
+    `<div class="code">${highlightJs(card.code)}</div></div>` +
+    `<div class="headline">${escapeHtml(card.headline)}</div>` +
+    `<div class="spacer"></div>` +
+    `<div class="foot">` +
+    `<div class="sub"><span class="caret">❯ </span>정답은 댓글에서 — 먼저 맞혀봐</div>` +
+    `<div class="handle">${escapeHtml(handle)}</div></div></div>`;
 }
 
 function aBody(card, handle) {
-  return `<div class="badge">정답</div>
-<div class="answer">${escapeHtml(card.answer)}</div>
-<div class="why">${escapeHtml(card.why)}</div>
-<div class="takeaway">${emphasizeKeywords(card.takeaway)}</div>
-<div class="handle">${escapeHtml(handle)}</div>`;
+  return `<div class="badge"><span>정답 / ANSWER</span></div>` +
+    `<div class="answer">${escapeHtml(card.answer)}</div>` +
+    `<div class="explain"><div class="why">${escapeHtml(card.why)}</div>` +
+    `<div class="takeaway">${emphasizeKeywords(card.takeaway)}</div></div>` +
+    `<div class="foot"><span class="handle">${escapeHtml(handle)}</span></div>`;
 }
 
-// card + side('q'|'a') + config → 완결 HTML 문서.
 export function renderCardHtml(card, side, config = {}) {
   const accents = config.accents ?? ACCENTS;
   const accentHex = accents[card.accent] ?? ACCENTS.lime;
   const handle = config.handle ?? '@yooni_dev';
   const fonts = config.fonts ?? {};
-  const inner = side === 'a' ? aBody(card, handle) : qBody(card, handle);
+  const isA = side === 'a';
+  const inner = isA ? aBody(card, handle) : qBody(card, handle);
+  const cls = isA ? 'card card--a' : 'card card--q';
   return `<!doctype html><html><head><meta charset="utf-8">` +
     `<style>${cardCss(accentHex, fonts)}</style></head>` +
-    `<body><div class="card">${inner}</div></body></html>`;
+    `<body><div class="${cls}">${inner}</div></body></html>`;
 }
