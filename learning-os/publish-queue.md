@@ -6,6 +6,7 @@
 ## approved (렌더/발행 대기)
 - `closure-makecounter-01` — 클로저 makeCounter 출력 · concepts/closure.md
 - `event-loop-order-01` — 이벤트 루프 출력 순서 · concepts/event-loop.md
+- `promise-all-sequential-01` — 순차 await vs Promise.all 몇 초 · concepts/promise-all-vs-sequential.md
 
 ## published (발행 완료)
 - (아직 없음)
