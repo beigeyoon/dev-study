@@ -4,16 +4,16 @@ type: concept
 domain: frontend
 knowledge_type: model
 status: understood
-mastery: 4
+mastery: 3
 importance: 5
 review: auto
 feynman_passed: true
 created: 2026-06-21
-updated: 2026-06-22
+updated: 2026-07-22
 sources: []
 related: [concepts/call-stack.md, concepts/async-await.md, concepts/macrotask-queue.md]
 tags: [closure, scope, memory, heap, javascript, execution]
-review_due: 2026-07-02
+review_due: 2026-07-23
 ---
 
 ## 한 줄 정의
@@ -40,6 +40,13 @@ _(2026-06-21 세션, 콜 스택 미해결 질문에서 추론으로 도출)_
 앵커: `makeBank(balance){ return { deposit:n=>balance+=n, check:()=>balance } }` → `a=makeBank(100); b=makeBank(0); a.deposit(50); log(a.check(), b.check())` → **150, 0**.
 - **무힌트 재구성:** ① 한 호출 안의 `deposit`·check`는 *같은* 배낭(같은 `balance` 참조) 공유 → deposit이 누른 걸 check가 봄. ② `b`는 `makeBank`의 *다른 호출* → 새 배낭 → 안 건드려짐. **배낭 = 함수 아닌 호출(스코프) 소유** 재확인.
 - **밑단까지 팜(1차 원리):** `makeBank` 프레임이 `return` 직후 pop돼도 `balance`가 안 죽는 이유 = **deposit/check가 아직 참조 → 도달 가능 → 수명은 프레임이 아니라 참조**. 거처 = **힙**(스택 아님). 전이: `a=null`로 참조 끊으면 → 도달 불가 → **GC가 힙에서도 회수**. 클로저 트레이드오프(상태 캡처 편의 ↔ 안 끊으면 메모리 누수)의 뒷면을 자력으로 짚음.
+
+### 2026-07-22 복습 (⚠️ 회귀 → 유도 회복, mastery 4→3, 1일 리셋)
+3주 공백(7-01→7-22) 뒤 `makeCounter` 앵커에서 **회귀 노출** — imp5 개념도 공백 앞에선 무너진다는 증거:
+- **출력을 `1 2 3`으로 오답**(정답 `1 2 1`) + **"a와 b가 count를 공유"라는 핵심 오개념**을 들고 있었음. 6-22에 굳었던 "배낭=호출 소유"가 3주 만에 흐려짐.
+- **유도 회복:** `let count=0`이 *어디/언제* 실행되나 힌트 → "함수 **안**, **호출마다** 실행 → `makeCounter()` 2번 호출 → count 변수 2개"를 스스로 재도출 → a·b가 서로 다른 배낭이라 출력은 `1 2 1`, 공유 아님으로 교정.
+- **프레임 pop 후 생존(핵심):** "배낭은 콜스택이 아니라 **heap**에 따로 저장 / 엔진은 **참조하는 곳이 하나도 없을 때만** 회수"로 수명=도달 가능성 재확립.
+- 회복이 *자력*이 아니라 *유도*라 m4 아님 → **m4→3, review_due 1일 리셋(2026-07-23).** 내일 같은 앵커를 무힌트로 넘기면 m4 복귀.
 
 ## 연결 / 철학적 질문
 - **resolves:** [콜 스택](call-stack.md)의 미해결 질문("프레임 사라진 뒤 콜백이 변수에 접근하는 법") — 답: 잡힌 변수는 힙으로 대피해 프레임과 따로 산다.

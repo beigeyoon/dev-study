@@ -4,16 +4,16 @@ type: concept
 domain: frontend
 knowledge_type: model
 status: understood
-mastery: 3
+mastery: 4
 importance: 4
 review: auto
 feynman_passed: true
 created: 2026-06-18
-updated: 2026-06-24
+updated: 2026-07-22
 sources: []
 related: [concepts/promise.md, concepts/microtask-queue.md, concepts/event-loop.md, concepts/call-stack.md, concepts/macrotask-queue.md, concepts/promise-all-vs-sequential.md, concepts/closure.md, concepts/http.md]
 tags: [async, runtime, javascript, promise]
-review_due: 2026-07-02
+review_due: 2026-08-12
 ---
 
 ## 한 줄 정의

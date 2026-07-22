@@ -9,11 +9,11 @@ importance: 4
 review: auto
 feynman_passed: true
 created: 2026-06-22
-updated: 2026-06-23
+updated: 2026-07-22
 sources: []
 related: [concepts/promise.md, concepts/async-await.md, concepts/event-loop.md, concepts/cookie-session-token.md]
 tags: [network, http, web, protocol, fetch, request-response]
-review_due: 2026-07-03
+review_due: 2026-07-23
 ---
 
 ## 한 줄 정의

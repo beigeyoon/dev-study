@@ -3,17 +3,17 @@ title: Promise.all 병렬 vs 순차 await
 type: concept
 domain: frontend
 knowledge_type: model
-status: understood
-mastery: 4
+status: mastered
+mastery: 5
 importance: 4
 review: auto
 feynman_passed: true
 created: 2026-06-18
-updated: 2026-07-01
+updated: 2026-07-22
 sources: []
 related: [concepts/promise.md, concepts/async-await.md, concepts/event-loop.md, concepts/macrotask-queue.md, concepts/microtask-queue.md, concepts/call-stack.md, concepts/process-vs-thread.md]
 tags: [async, performance, javascript, promise, concurrency]
-review_due: 2026-07-08
+review_due: 2026-08-21
 ---
 
 ## 한 줄 정의
@@ -61,6 +61,12 @@ _(2026-06-18 세션, 추론으로 재구성)_
   - **CPU 경계(`new Promise` 안 while로 1초 태우기) = 3초**를 "while은 Web API에 못 넘기고 JS 스레드가 직접 실행"으로 정확히 도출 → **"겹침은 실행이 아니라 기다림에서"** 1차 원리 확립.
   - **executor 동기 실행/인터리빙 없음을 사용자가 먼저 질문으로 파고듦:** "배열 `[heavyA(),heavyB(),heavyC()]`에서 heavyB의 `Date.now()`는 heavyA의 while+resolve가 다 끝난 뒤에야 평가되나?" → **맞음(전자).** 함수 호출은 몸통을 끝까지 동기 실행 후 리턴, `await`(양보점) 없으면 인터리빙 0 → 완전 직렬. fetch는 호출이 곧 *빠른 리턴*(대기는 호스트로), heavy는 호출이 곧 *점유*라 리턴이 늦음 = 두 세계를 가르는 경계.
   - **전이(Web Worker)만 힌트 필요:** "한 스레드론 CPU 못 겹침"은 자력 도출했으나 탈출구 이름/대조는 유도받음. 오개념 1개 교정: *"스레드 더 얻으려면 프로세스가 더 필요"* → 아님, **한 프로세스가 스레드 여럿**(process-vs-thread 그대로). 핵심 대조: **"`Promise.all`은 기다림을 겹치고(스레드 그대로), Web Worker는 일을 겹친다(스레드 추가=진짜 병렬)."** → 다음 복습에서 이 전이를 무힌트로 꺼내면 m5.
+
+**✅ m5 도달 (2026-07-22 복습, m4→5):** 3주 공백(마지막 세션 7-01) 뒤 단독 Feynman. 핵심을 전부 무힌트 자력 재구성:
+  - 버전 A=3초 / B=C=1초 즉답. **B와 C가 같은 1초인 이유**를 "배열 `[fetchA(),fetchB(),fetchC()]`도 원소를 왼쪽부터 동기 호출 → `await` 전에 셋 다 in-flight, `Promise.all`은 집계기일 뿐"으로 자력 도출(6-24에 무너졌던 지점).
+  - ⚠️ 중간에 **"C는 병렬성" 오개념** 노출 → **스스로 교정:** "JS 스레드는 B·C 모두 1개, 겹치는 건 *실행*이 아니라 *기다림*, 1초를 세는 건 브라우저 Web API, JS 스레드는 콜스택 비우며 제 갈 길" → **둘 다 동시성(concurrency), 병렬성 아님** 확정.
+  - **CPU 경계(`heavyA/B/C` = while 1초씩) = 3초**를 "누가 대신 기다려주지 않음, JS 스레드가 순차 직접 실행"으로 자력. **전이(진짜 병렬 필요)를 "스레드가 여러 개 필요"로 무힌트 도출** — 7-01의 *"프로세스 하나 더?"* 오답을 **스레드**로 자가 교정(process-vs-thread 굳음). `Web Worker` **이름만** 힌트받음(§2 기준 reference성 명칭이라 mastery 대상 아님).
+  - **봉인 확정:** "`Promise.all`은 *기다림*을 겹친다(스레드 1개 그대로) / `Web Worker`는 *일(실행)*을 겹친다(스레드 추가=진짜 병렬)." → status understood→**mastered**. **⚠️ m5 유지 조건:** 다음 복습 때 이 봉인 문장을 `Web Worker` 이름까지 무힌트로 꺼낼 것.
 
 ## 연결 / 철학적 질문
 - **동시성 vs 병렬성:** 세 fetch는 **동시적(concurrent)** 이지만 **병렬적(parallel)** 이지 않다. JS 스레드는 하나. 겹침은 "실행"이 아니라 "기다림"에서 일어나고, 그 기다림은 일이 아니라 OS/하드웨어에 떠넘긴 예약이다.

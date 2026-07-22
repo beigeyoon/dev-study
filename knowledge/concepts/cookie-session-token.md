@@ -9,11 +9,11 @@ importance: 4
 review: auto
 feynman_passed: true
 created: 2026-06-23
-updated: 2026-06-24
+updated: 2026-07-22
 sources: []
 related: [concepts/http.md]
 tags: [network, auth, authentication, cookie, session, token, jwt, stateless, http]
-review_due: 2026-07-03
+review_due: 2026-07-23
 ---
 
 ## 한 줄 정의

@@ -9,11 +9,11 @@ importance: 4
 review: auto
 feynman_passed: true
 created: 2026-06-23
-updated: 2026-06-24
+updated: 2026-07-22
 sources: []
 related: [concepts/call-stack.md, concepts/event-loop.md, concepts/promise-all-vs-sequential.md]
 tags: [os, process, thread, concurrency, parallelism, race-condition, single-thread, web-worker, js-engine, runtime]
-review_due: 2026-07-03
+review_due: 2026-08-05
 ---
 
 ## 한 줄 정의
