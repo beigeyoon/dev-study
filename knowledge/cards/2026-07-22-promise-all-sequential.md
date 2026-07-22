@@ -1,5 +1,5 @@
 ---
-id: promise-all-sequential-01
+id: 2026-07-22-promise-all-sequential
 concept: concepts/promise-all-vs-sequential.md
 domain: frontend
 label: JS · 비동기

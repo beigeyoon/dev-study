@@ -21,10 +21,10 @@ description: 학습 카드(스레드 발행용) 제작. 파인만 통과 개념�
 2. 그 개념 페이지의 `## 내 파인만 설명`에서 **앵커(상황·코드)** 를 찾아 **간결한 Q+A 초안**을 만든다. 원칙(스펙 §1): 질문 간결, 해설 정수만. 페이지의 회귀로그·복습앵글을 그대로 옮기지 말 것.
 3. 다음 6필드를 사용자에게 제안하고 승인받는다:
    - `질문코드`(```lang 코드블록), `헤드라인`, `정답`, `왜`(2줄 이내), `한줄정리`(핵심 키워드에 `**굵게**`), `캡션`(훅+해시태그).
-4. 승인되면 `knowledge/cards/<id>.md` 생성. `id` 규칙: `<concept-slug>-<anchor-slug>-NN`(예: `closure-makecounter-01`). frontmatter: `id, concept, domain, label, status: approved, accent: lime, created:<오늘>, published:(빈값), tags`.
+4. 승인되면 `knowledge/cards/<id>.md` 생성. `id` 규칙: **`<오늘날짜>-<concept-slug>-<anchor-slug>`**(예: `2026-07-22-closure-makecounter`). 날짜 prefix로 세션 파일과 동일하게 정렬됨. 파일명 = id. frontmatter: `id, concept, domain, label, status: approved, accent: lime, created:<오늘>, published:(빈값), tags`.
    - `label`은 배지 텍스트(예: `JS · 클로저`).
 5. `learning-os/publish-queue.md`의 **approved** 섹션에 카드 추가.
-6. 렌더 제안: "`npm run cards` 돌려서 PNG 뽑을까?" → 사용자 승인 시 실행, `site/cards/dist/<id>-q.png`·`-a.png` 안내.
+6. 렌더 제안: "`npm run cards` 돌려서 뽑을까?" → 사용자 승인 시 실행. 산출물은 **카드별 폴더** `site/cards/dist/<id>/` 안에 `question.png`·`answer.png`·`caption.txt`(발행용 본문+안내). 폴더 하나 = 스레드 포스트 하나.
 7. 개념 페이지 `## 실전 사례`(또는 related)에 카드 역링크는 선택(가벼운 수준).
 
 ## 발행 후(사용자가 스레드에 올린 뒤)

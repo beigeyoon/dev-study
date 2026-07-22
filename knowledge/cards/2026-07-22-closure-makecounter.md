@@ -1,5 +1,5 @@
 ---
-id: closure-makecounter-01
+id: 2026-07-22-closure-makecounter
 concept: concepts/closure.md
 domain: frontend
 label: JS · 클로저

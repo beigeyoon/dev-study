@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync, mkdirSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, mkdirSync, writeFileSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import puppeteer from 'puppeteer';
@@ -29,6 +29,19 @@ function loadCards() {
     .map((f) => parseCard({ id: f, content: readFileSync(join(CARDS_DIR, f), 'utf8') }));
 }
 
+// 발행 시 그 폴더 하나만 열면 되도록: 본문 캡션 + 발행 순서 안내.
+function captionFile(card) {
+  return [
+    '━━ 질문 포스트 본문 ━━',
+    card.caption,
+    '',
+    '━━ 발행 방법 ━━',
+    '1. 질문 포스트: question.png 첨부 + 위 본문 붙여넣기',
+    '2. 자기 답글: answer.png 첨부 (정답)',
+    '',
+  ].join('\n');
+}
+
 async function main() {
   const config = loadConfig();
   const cards = loadCards().filter(isRenderable);
@@ -41,16 +54,19 @@ async function main() {
   const browser = await puppeteer.launch({ headless: 'shell' });
   try {
     for (const card of cards) {
-      for (const side of ['q', 'a']) {
+      // 카드 1장 = 자기 폴더 하나(질문·정답 이미지 + 발행용 캡션).
+      const cardDir = join(OUT_DIR, card.id);
+      mkdirSync(cardDir, { recursive: true });
+      for (const [side, name] of [['q', 'question'], ['a', 'answer']]) {
         const page = await browser.newPage();
         await page.setViewport({ width: 1080, height: 1350, deviceScaleFactor: 2 });
         await page.setContent(renderCardHtml(card, side, config), { waitUntil: 'load' });
         await page.evaluate(() => document.fonts.ready); // 폰트 로딩 완료까지 대기(실제 promise resolve)
-        const out = join(OUT_DIR, `${card.id}-${side}.png`);
-        await page.screenshot({ path: out });
+        await page.screenshot({ path: join(cardDir, `${name}.png`) });
         await page.close();
-        console.log(`✓ ${card.id}-${side}.png`);
       }
+      writeFileSync(join(cardDir, 'caption.txt'), captionFile(card));
+      console.log(`✓ ${card.id}/ (question.png · answer.png · caption.txt)`);
     }
   } finally {
     await browser.close();

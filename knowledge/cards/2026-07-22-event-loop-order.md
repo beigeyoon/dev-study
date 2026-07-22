@@ -1,5 +1,5 @@
 ---
-id: event-loop-order-01
+id: 2026-07-22-event-loop-order
 concept: concepts/event-loop.md
 domain: frontend
 label: JS · 이벤트 루프
