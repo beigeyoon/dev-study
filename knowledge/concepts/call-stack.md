@@ -13,7 +13,7 @@ updated: 2026-06-24
 sources: []
 related: [concepts/event-loop.md, concepts/macrotask-queue.md, concepts/microtask-queue.md, concepts/async-await.md, concepts/promise-all-vs-sequential.md, concepts/promise.md, concepts/closure.md, concepts/process-vs-thread.md]
 tags: [runtime, javascript, execution]
-review_due: 2026-07-01
+review_due: 2026-07-02
 ---
 
 ## 한 줄 정의

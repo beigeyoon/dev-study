@@ -13,7 +13,7 @@ updated: 2026-06-24
 sources: []
 related: [concepts/http.md]
 tags: [network, auth, authentication, cookie, session, token, jwt, stateless, http]
-review_due: 2026-06-27
+review_due: 2026-07-03
 ---
 
 ## 한 줄 정의

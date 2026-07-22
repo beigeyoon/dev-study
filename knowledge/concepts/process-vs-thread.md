@@ -13,7 +13,7 @@ updated: 2026-06-24
 sources: []
 related: [concepts/call-stack.md, concepts/event-loop.md, concepts/promise-all-vs-sequential.md]
 tags: [os, process, thread, concurrency, parallelism, race-condition, single-thread, web-worker, js-engine, runtime]
-review_due: 2026-06-27
+review_due: 2026-07-03
 ---
 
 ## 한 줄 정의

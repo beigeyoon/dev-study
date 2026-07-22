@@ -13,7 +13,7 @@ updated: 2026-06-22
 sources: []
 related: [concepts/async-await.md, concepts/microtask-queue.md, concepts/event-loop.md, concepts/macrotask-queue.md, concepts/promise-all-vs-sequential.md, concepts/http.md]
 tags: [async, runtime, javascript, promise]
-review_due: 2026-06-25
+review_due: 2026-07-02
 ---
 
 ## 한 줄 정의

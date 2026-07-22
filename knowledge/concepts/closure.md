@@ -13,7 +13,7 @@ updated: 2026-06-22
 sources: []
 related: [concepts/call-stack.md, concepts/async-await.md, concepts/macrotask-queue.md]
 tags: [closure, scope, memory, heap, javascript, execution]
-review_due: 2026-06-25
+review_due: 2026-07-02
 ---
 
 ## 한 줄 정의

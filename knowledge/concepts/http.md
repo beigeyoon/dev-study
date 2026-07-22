@@ -13,7 +13,7 @@ updated: 2026-06-23
 sources: []
 related: [concepts/promise.md, concepts/async-await.md, concepts/event-loop.md, concepts/cookie-session-token.md]
 tags: [network, http, web, protocol, fetch, request-response]
-review_due: 2026-06-26
+review_due: 2026-07-03
 ---
 
 ## 한 줄 정의

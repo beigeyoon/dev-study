@@ -4,16 +4,16 @@ type: concept
 domain: frontend
 knowledge_type: model
 status: understood
-mastery: 3
+mastery: 4
 importance: 4
 review: auto
 feynman_passed: true
 created: 2026-06-18
-updated: 2026-06-24
+updated: 2026-07-01
 sources: []
 related: [concepts/promise.md, concepts/async-await.md, concepts/event-loop.md, concepts/macrotask-queue.md, concepts/microtask-queue.md, concepts/call-stack.md, concepts/process-vs-thread.md]
 tags: [async, performance, javascript, promise, concurrency]
-review_due: 2026-06-25
+review_due: 2026-07-08
 ---
 
 ## 한 줄 정의
@@ -54,6 +54,13 @@ _(2026-06-18 세션, 추론으로 재구성)_
   - **CPU 버전 = 3초**를 *암기가 아닌 원리로* 잡아냄("JS 스레드는 하나라 CPU 계산이 그 스레드를 점유"). 이어 핵심 비대칭을 자기 말로: **"네트워크 기다림은 CPU가 아니라 Web API가 처리하고 CPU는 완료 소식만 듣는다"** → 그래서 단일 스레드인데도 I/O는 겹치고 CPU는 못 겹침. **겹침은 실행이 아니라 기다림에서.** 전이: 진짜 계산 병렬 = Web Worker. → mastery 4 정당화, feynman 재통과.
 
 **⚠️ 회귀 (2026-06-24 복습):** 통합 앵커에서 "Promise.all 잘 모르겠음"으로 막힘 — m4였으나 자력 재구성 실패(6-21 이후 미복습 3일). **핵심 오해 노출:** 순차 `const a = await fetchA(); const b = await fetchB()`에서 **"fetchB도 이미 시작됐다"고 오답.** 교정: `await`가 다음 *줄 진입 자체*를 막아 fetchB는 fetchA가 끝난 t=1에야 호출됨(→총 2초). 회복 후 **사용자 스스로 심화 질문 2개를 발의:** ① "분리 호출 후 await 2개(`p1=fetchA();p2=fetchB();await p1;await p2`)가 Promise.all과 동일?" → 타이밍 동일 / 차이는 **에러(fail-fast·미await된 reject의 unhandled rejection)** 임을 같이 도출. ② "두 fetch 동시 출발 = Web API가 2개 도는 것?" → 네트워크 대기를 **호스트가 떠안아** JS 스레드 바깥에서 겹침을 자력 연결. → **재각인: 병렬성은 `Promise.all`도 await 개수도 아니라 "await 전에 다 호출해 in-flight로 만든 출발 시점"에서 나온다.** m4→3, review_due 1일 리셋(2026-06-25)으로 재굳힘.
+
+**✅ 회귀 완전 회복 (2026-07-01 복습, m3→4):** 이번엔 통합 앵커가 아니라 **Promise.all 단독 Feynman**으로 점검(6-24 교훈: "통합 앵커가 개별 Feynman을 대체 못 함" 반영) → 전부 무힌트 자력 재구성:
+  - 버전1 타이밍 **"fetchB는 t=1에 호출, 첫 줄 await 이후는 전부 대기"** — 6-24에 무너졌던 그 지점을 스스로 다시 세움.
+  - **버전3(분리 호출 후 await 3개, `Promise.all` 미사용) = 1초**를 자력 도출 → "병렬성은 `Promise.all`이 아니라 *출발 시점*에서 나온다, all은 집계기일 뿐"을 스스로 증명.
+  - **CPU 경계(`new Promise` 안 while로 1초 태우기) = 3초**를 "while은 Web API에 못 넘기고 JS 스레드가 직접 실행"으로 정확히 도출 → **"겹침은 실행이 아니라 기다림에서"** 1차 원리 확립.
+  - **executor 동기 실행/인터리빙 없음을 사용자가 먼저 질문으로 파고듦:** "배열 `[heavyA(),heavyB(),heavyC()]`에서 heavyB의 `Date.now()`는 heavyA의 while+resolve가 다 끝난 뒤에야 평가되나?" → **맞음(전자).** 함수 호출은 몸통을 끝까지 동기 실행 후 리턴, `await`(양보점) 없으면 인터리빙 0 → 완전 직렬. fetch는 호출이 곧 *빠른 리턴*(대기는 호스트로), heavy는 호출이 곧 *점유*라 리턴이 늦음 = 두 세계를 가르는 경계.
+  - **전이(Web Worker)만 힌트 필요:** "한 스레드론 CPU 못 겹침"은 자력 도출했으나 탈출구 이름/대조는 유도받음. 오개념 1개 교정: *"스레드 더 얻으려면 프로세스가 더 필요"* → 아님, **한 프로세스가 스레드 여럿**(process-vs-thread 그대로). 핵심 대조: **"`Promise.all`은 기다림을 겹치고(스레드 그대로), Web Worker는 일을 겹친다(스레드 추가=진짜 병렬)."** → 다음 복습에서 이 전이를 무힌트로 꺼내면 m5.
 
 ## 연결 / 철학적 질문
 - **동시성 vs 병렬성:** 세 fetch는 **동시적(concurrent)** 이지만 **병렬적(parallel)** 이지 않다. JS 스레드는 하나. 겹침은 "실행"이 아니라 "기다림"에서 일어나고, 그 기다림은 일이 아니라 OS/하드웨어에 떠넘긴 예약이다.
