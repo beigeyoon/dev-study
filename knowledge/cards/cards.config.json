@@ -1,0 +1,15 @@
+{
+  "handle": "@yooni_dev",
+  "accentDefault": "lime",
+  "accents": {
+    "lime": "#c2f542",
+    "cyan": "#3ff0e0",
+    "magenta": "#ff5db1",
+    "orange": "#ff9f45"
+  },
+  "fonts": {
+    "headline": null,
+    "mono": null,
+    "korean": null
+  }
+}

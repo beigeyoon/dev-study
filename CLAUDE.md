@@ -10,7 +10,7 @@
 
 ## 1. 디렉토리 구조
 - `sources/` — RAW 원문(불변). 읽기만, 절대 수정 금지. `articles/`(글·문서), `problems/`(실무 문제), `_inbox/`(이동 중 캡처).
-- `knowledge/` — 네가 관리하는 가공물. `concepts/`(개념), `topics/`(분야), `entities/`(도구·제품), `synthesis/`(통합).
+- `knowledge/` — 네가 관리하는 가공물. `concepts/`(개념), `topics/`(분야), `entities/`(도구·제품), `synthesis/`(통합), `cards/`(발행용 카드 소스).
 - `learning-os/` — 학습 운영. `roadmap.md`, `gaps.md`, `backlog.md`, `review-queue.md`, `goals.md`, `sessions/`.
 - `mindset/` — 개발자 마인드 독립 트랙. `principles/`, `reflections/`.
 - `index.md`(카탈로그), `log.md`(연대기), `templates/`(페이지 양식).
@@ -66,6 +66,12 @@ review_due: YYYY-MM-DD
 
 ### Lint — "위키 점검해줘"
 모순·구식 정보·고아 페이지·깨진 `related` 링크·`retired` 후보 점검.
+
+### 카드 발행 — `/card` (사용자 발동)
+잘 학습된 개념을 스레드 발행용 질문/정답 카드 이미지로 뽑는 트랙. **자동 제안 아님 — 사용자가 `/card`로 발동**할 때만 동작한다.
+- 자격: `feynman_passed: true` 개념(추천 모드는 추가로 `mastery ≥ 4`).
+- 소스는 `knowledge/cards/`, 렌더는 `npm run cards` → `site/cards/dist/` PNG, 발행은 수동.
+- 상세 워크플로우는 `.claude/skills/card/SKILL.md`, 설계는 `docs/superpowers/specs/2026-07-22-threads-study-card-publishing-design.md`, 큐는 `learning-os/publish-queue.md`.
 
 ## 4. 복습 알고리즘 (간격 반복 + 중요도)
 - **간격 진행은 모두 동일**(간격 효과 보존): `1 → 3 → 7 → 14 → 30 → 90일 …`.

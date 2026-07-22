@@ -18,7 +18,8 @@ function collectMarkdown(dir) {
       const full = join(e.parentPath ?? e.path, e.name);
       const id = relative(KNOWLEDGE_DIR, full).split(sep).join('/');
       return { id, content: readFileSync(full, 'utf8') };
-    });
+    })
+    .filter((f) => !f.id.startsWith('cards/')); // 발행 카드는 개념 그래프에서 제외
 }
 
 const files = collectMarkdown(KNOWLEDGE_DIR);

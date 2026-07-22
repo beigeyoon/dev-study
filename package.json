@@ -7,10 +7,14 @@
   "scripts": {
     "build": "node scripts/generate-graph.js",
     "test": "node --test",
-    "dev": "node scripts/generate-graph.js && node scripts/serve.js"
+    "dev": "node scripts/generate-graph.js && node scripts/serve.js",
+    "cards": "node scripts/render-cards.js"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
     "marked": "^12.0.0"
+  },
+  "devDependencies": {
+    "puppeteer": "^25.3.0"
   }
 }
