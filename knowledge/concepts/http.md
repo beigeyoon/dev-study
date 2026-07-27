@@ -9,11 +9,11 @@ importance: 4
 review: auto
 feynman_passed: true
 created: 2026-06-22
-updated: 2026-07-22
+updated: 2026-07-24
 sources: []
 related: [concepts/promise.md, concepts/async-await.md, concepts/event-loop.md, concepts/cookie-session-token.md]
 tags: [network, http, web, protocol, fetch, request-response]
-review_due: 2026-07-23
+review_due: 2026-08-07
 ---
 
 ## 한 줄 정의
@@ -84,16 +84,25 @@ _(2026-06-23 첫 간격 복습 — feynman 통과, m2→3 / learning→understoo
 - **Host 헤더를 1차 원리로 도출:** 시작줄엔 path(`/users/42`)만 있고 URL의 `api.example.com`이 빠짐 → "같은 건물(IP)에 여러 회사(도메인)가 세 들어 사니, 회사 이름이 없으면 배달부가 어디로 갈지 모른다" → 이 빠진 조각이 들어가는 칸 = **`Host:` 헤더 (= 버추얼 호스팅의 이유).**
 - 응답 첫 줄 = status code + 사유구. fetch 404 함정을 **양방향**으로 설명: 404=fulfilled(답장 도착 자체가 네트워크 성공) / reject는 답장이 아예 못 올 때(서버다운·DNS·오프라인)만 → 개발자는 status code로 직접 실패를 판별(`if(!res.ok)`).
 
+_(2026-07-24 복습 — DELETE 앵커, ⚠️ Host 존재 이유 회귀 → 유도 회복, m3 유지)_
+- ✅ **살아남은 것(무힌트):** 요청 3층 / status `404` + 4xx=클라이언트·5xx=서버(책임 소재) / fetch가 404에도 **resolve**하고 status code로 판별. ~30일 공백 뒤에도 코어는 durable.
+- ⚠️ **흐려진 것:** `Host` 헤더의 *존재 이유*. "**IP 하나 = 사이트 하나**"라는 오개념을 들고 있어서 "도메인이 시작줄에 없어 생기는 문제"를 못 봄. (6-23엔 이걸 1차 원리로 자력 도출했었음 → 30일 만에 why가 흐려짐.)
+- 🔧 **정정:** DNS가 여러 도메인 → **같은 IP** 매핑 가능 = 버추얼 호스팅(shared hosting·CDN). 한 IP에 `api.`/`blog.`/`shop.`이 세 듦 → 첫 줄의 `/users/42`만으론 "*누구네* 42?"가 모호 → 그 빠진 회사 이름 칸 = `Host:`.
+- 💡 **새 질문 해소(설계 의도):** "왜 첫 줄이 아니라 헤더에?" → **하위 호환.** `METHOD path VERSION` 첫 줄은 이미 전 세계에 박혀 있어 못 바꿈. 헤더는 "못 알아들으면 무시" 가능한 **열린 확장 슬롯** → 새 헤더 `Host:`로 끼워넣고 1.1에서 필수화. (HTTP/2는 `:authority` 슈도-헤더로 정리.)
+- 판정: 코어 durable하나 Host why를 유도로 회복 → **m3 유지, review_due 30일→14일로 당김(8-07).** 다음에 "한 IP에 여러 도메인 → 그래서 Host"를 무힌트로 세우면 m4.
+
 ## 연결 / 철학적 질문
 - **builds-on:** [Promise](promise.md)·[async/await](async-await.md)·[이벤트 루프](event-loop.md) — `fetch`가 반환하는 Promise의 행선지·resolve를 누르는 주체(Web API)가 실제로 *무엇을* 주고받는지가 HTTP. 며칠간 본 비동기 사슬의 **바깥 칸**.
 - **why(설계 의도):** 사람이 읽을 수 있는 텍스트 + 요청/응답 한 쌍이라는 단순한 규약이라 누구든 구현 가능 → 웹의 보편성.
+- **why(첫 줄 vs 헤더 = 확장성 원리):** 첫 줄 `METHOD path VERSION` = 배포된 **고정 코어**(못 바꿈, 바꾸면 전 세계 파서 깨짐). 헤더 = "못 알아들으면 무시" 가능한 **열린 확장 슬롯.** 그래서 나중에 필요해진 도메인 정보를 첫 줄을 뜯지 않고 새 헤더 `Host:`로 추가(1.1 필수화). **전이(mindset):** 배포된 포맷의 코어는 불변으로 두고, 확장은 *무시해도 안전한 optional 슬롯*으로 붙인다 — API 새 필드 optional 추가·DB 컬럼 nullable 마이그레이션과 같은 원리.
 - **트레이드오프(떡밥):** 매 요청이 독립(stateless)이라 단순·확장 쉽지만, "이 사람 누구였지"를 매번 다시 알려야 함 → 쿠키·토큰·세션이 등장하는 이유.
 
 ## 미해결 질문
 - ✅ **상태 비저장(stateless):** HTTP는 요청마다 독립인데 로그인은 어떻게 유지? → [쿠키/세션/토큰](cookie-session-token.md)으로 해소(2026-06-23). 매 요청마다 티켓 자동 재제출 + 세션(서버 기억) vs 토큰(stateless).
 - **method의 의미론:** GET/POST 말고 PUT vs PATCH 차이, "멱등성(idempotency)"이란? 안전한 메서드?
 - **선 아래:** HTTP 텍스트는 실제로 어떻게 서버까지 가나 — TCP/IP, 그리고 HTTPS(TLS)는 이 위에 뭘 더하나?
-- **버전:** `HTTP/1.1` vs `HTTP/2` vs `HTTP/3`은 뭐가 다른가?
+- ✅ **왜 도메인이 첫 줄이 아니라 `Host` 헤더에?** → 해소(2026-07-24): 하위 호환. 첫 줄 형식은 이미 배포돼 못 바꾸고, 헤더는 안전하게 추가 가능한 확장 슬롯이라 새 `Host` 헤더로 끼움. (위 "연결/철학적 질문" 참고.)
+- **버전:** `HTTP/1.1` vs `HTTP/2` vs `HTTP/3`은 뭐가 다른가? (Host → HTTP/2 `:authority` 슈도-헤더로 진화.)
 
 ## 실전 사례
 <!-- fetch 404 미처리 버그, REST API 설계, status code 디버깅 등 실제 사례 연결. -->

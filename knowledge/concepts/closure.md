@@ -4,16 +4,16 @@ type: concept
 domain: frontend
 knowledge_type: model
 status: understood
-mastery: 3
+mastery: 4
 importance: 5
 review: auto
 feynman_passed: true
 created: 2026-06-21
-updated: 2026-07-22
+updated: 2026-07-24
 sources: []
 related: [concepts/call-stack.md, concepts/async-await.md, concepts/macrotask-queue.md]
 tags: [closure, scope, memory, heap, javascript, execution]
-review_due: 2026-07-23
+review_due: 2026-07-31
 ---
 
 ## 한 줄 정의
@@ -47,6 +47,12 @@ _(2026-06-21 세션, 콜 스택 미해결 질문에서 추론으로 도출)_
 - **유도 회복:** `let count=0`이 *어디/언제* 실행되나 힌트 → "함수 **안**, **호출마다** 실행 → `makeCounter()` 2번 호출 → count 변수 2개"를 스스로 재도출 → a·b가 서로 다른 배낭이라 출력은 `1 2 1`, 공유 아님으로 교정.
 - **프레임 pop 후 생존(핵심):** "배낭은 콜스택이 아니라 **heap**에 따로 저장 / 엔진은 **참조하는 곳이 하나도 없을 때만** 회수"로 수명=도달 가능성 재확립.
 - 회복이 *자력*이 아니라 *유도*라 m4 아님 → **m4→3, review_due 1일 리셋(2026-07-23).** 내일 같은 앵커를 무힌트로 넘기면 m4 복귀.
+
+### 2026-07-24 복습 (✅ 무힌트 통과 → mastery 3→4 복귀)
+1일 리셋 뒤 `makeCounter` 앵커를 **무힌트로 재구성**:
+- 출력 `1 2 1` 자력 + "a·b는 다른 호출이라 배낭 따로" + "**힙**에 살고, **참조가 하나라도 남으면** 산다"(수명=도달 가능성)까지 유도 없이. 7-22의 `1 2 3`/공유 오답 완전 회복.
+- **정밀화(호출 소유 조임):** 답을 "**함수마다** 배낭 따로"로 *표현*하는 잔여 오개념을 반례로 사냥 — `한 호출 → { inc, get }` 두 함수가 `count`를 공유(`c.inc();c.inc();c.get()===2`). 사용자가 "함수마다였으면 inc/get이 갈라져야 하는데 안 갈라진다"는 모순을 **스스로 잡아** → **배낭 = 함수 아닌 호출(스코프) 소유**로 봉인. 6-22의 축이 이번엔 반례로 굳음.
+- 무힌트 통과 + 표현까지 조여 **m4 복귀, review_due 7-31**(1일 리셋 후 첫 통과 → 계단 복귀).
 
 ## 연결 / 철학적 질문
 - **resolves:** [콜 스택](call-stack.md)의 미해결 질문("프레임 사라진 뒤 콜백이 변수에 접근하는 법") — 답: 잡힌 변수는 힙으로 대피해 프레임과 따로 산다.
