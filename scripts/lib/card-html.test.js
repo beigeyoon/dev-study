@@ -36,25 +36,31 @@ const CARD = {
   caption: '#클로저',
 };
 
-test('renderCardHtml(q)는 코드/헤드라인/핸들/치수 포함', () => {
-  const html = renderCardHtml(CARD, 'q', { handle: '@yooni_dev' });
+test('renderCardHtml(q)는 코드/헤드라인/치수 포함', () => {
+  const html = renderCardHtml(CARD, 'q', {});
   assert.match(html, /^<!doctype html>/i);
   assert.match(html, /1080px/);
   assert.match(html, /1350px/);
   assert.match(html, /출력은\?/);
   assert.match(html, /<span class="kw">const<\/span>/);
-  assert.match(html, /@yooni_dev/);
   assert.match(html, /#c2f542/);
-  assert.match(html, /정답은 댓글/);
+  assert.match(html, /정답은 댓글에서<\/div>/);
   assert.match(html, /JS · 클로저/);
 });
 
-test('renderCardHtml(a)는 정답/한줄정리 강조/핸들 포함, 코드 없음', () => {
-  const html = renderCardHtml(CARD, 'a', { handle: '@yooni_dev' });
+test('renderCardHtml(a)는 정답/한줄정리 강조 포함, 코드 없음', () => {
+  const html = renderCardHtml(CARD, 'a', {});
   assert.match(html, /1 2 1/);
   assert.match(html, /<span class="hl">호출<\/span>/);
-  assert.match(html, /@yooni_dev/);
   assert.doesNotMatch(html, /class="kw"/);
+});
+
+test('renderCardHtml은 어느 면에도 핸들을 넣지 않는다', () => {
+  for (const side of ['q', 'a']) {
+    const html = renderCardHtml(CARD, side, { handle: '@yooni_dev' });
+    assert.doesNotMatch(html, /@yooni_dev/);
+    assert.doesNotMatch(html, /class="handle"/);
+  }
 });
 
 test('renderCardHtml은 accent를 config.accents로 오버라이드', () => {

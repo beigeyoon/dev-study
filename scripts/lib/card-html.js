@@ -115,10 +115,8 @@ ${fontFace('CardKorean', fonts.korean)}
 .card--q .headline{margin-top:56px;font-family:${head}-apple-system,sans-serif;
   font-weight:800;font-size:96px;line-height:1.05;letter-spacing:-2px;color:#f0f6fc;}
 .card--q .spacer{flex:1;min-height:40px;}
-.card--q .foot{display:flex;flex-direction:column;gap:12px;}
 .card--q .sub{font-family:${mono}ui-monospace,Menlo,monospace;font-size:30px;color:#8b949e;}
 .card--q .sub .caret{color:${accentHex};}
-.card--q .handle{font-family:${mono}ui-monospace,Menlo,monospace;font-size:30px;color:#6e7681;}
 
 /* ── 정답 카드 · 포스터 반전 ── */
 .card--a{background:${accentHex};color:#111318;}
@@ -136,13 +134,10 @@ ${fontFace('CardKorean', fonts.korean)}
   line-height:1.35;letter-spacing:-1px;color:#111318;}
 .card--a .takeaway .hl{background:#111318;color:${accentHex};padding:2px 14px;
   border-radius:4px;white-space:nowrap;}
-.card--a .foot{border-top:1px solid rgba(0,0,0,.28);padding:30px 52px;}
-.card--a .handle{font-family:${mono}ui-monospace,Menlo,monospace;font-weight:700;
-  font-size:26px;color:rgba(17,19,24,.62);}
 `;
 }
 
-function qBody(card, handle) {
+function qBody(card) {
   const size = codeFontSize(card.code);
   return `<div class="bar"><span class="dots"><i></i><i></i><i></i></span>` +
     `<span class="file">${escapeHtml(fileName(card))}</span>` +
@@ -152,27 +147,23 @@ function qBody(card, handle) {
     `<div class="code">${highlightJs(card.code)}</div></div>` +
     `<div class="headline">${escapeHtml(card.headline)}</div>` +
     `<div class="spacer"></div>` +
-    `<div class="foot">` +
-    `<div class="sub"><span class="caret">❯ </span>정답은 댓글에서 — 먼저 맞혀봐</div>` +
-    `<div class="handle">${escapeHtml(handle)}</div></div></div>`;
+    `<div class="sub"><span class="caret">❯ </span>정답은 댓글에서</div></div>`;
 }
 
-function aBody(card, handle) {
+function aBody(card) {
   const asize = answerFontSize(card.answer);
   return `<div class="badge"><span>정답 / ANSWER</span></div>` +
     `<div class="answer" style="font-size:${asize}px">${escapeHtml(card.answer)}</div>` +
     `<div class="explain"><div class="why">${escapeHtml(card.why)}</div>` +
-    `<div class="takeaway">${emphasizeKeywords(card.takeaway)}</div></div>` +
-    `<div class="foot"><span class="handle">${escapeHtml(handle)}</span></div>`;
+    `<div class="takeaway">${emphasizeKeywords(card.takeaway)}</div></div>`;
 }
 
 export function renderCardHtml(card, side, config = {}) {
   const accents = config.accents ?? ACCENTS;
   const accentHex = accents[card.accent] ?? ACCENTS.lime;
-  const handle = config.handle ?? '@yooni_dev';
   const fonts = config.fonts ?? {};
   const isA = side === 'a';
-  const inner = isA ? aBody(card, handle) : qBody(card, handle);
+  const inner = isA ? aBody(card) : qBody(card);
   const cls = isA ? 'card card--a' : 'card card--q';
   return `<!doctype html><html><head><meta charset="utf-8">` +
     `<style>${cardCss(accentHex, fonts)}</style></head>` +

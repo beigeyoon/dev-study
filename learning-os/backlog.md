@@ -30,5 +30,8 @@
 - [ ] **락(lock)/뮤텍스 · 데드락** — (importance: 3, race condition의 해결책. `①②③`을 atomic하게 묶기. 데드락=락이 서로를 기다림. os 심화)
 - [ ] **OS 스케줄링 / 컨텍스트 스위치** — (importance: 3, 코어 4개에 스레드 100개를 OS가 어떻게 번갈아 돌리나. "동시성 흉내"가 OS 레벨에서도 반복됨 — 이벤트 루프와 같은 결)
 
+## 카드 후보 (다음 `/card` 대상)
+- [ ] **Promise.all의 CPU 경계** — 앵커: `fetch` 대신 `while`로 1초씩 태운 `heavyA/B/C`를 `Promise.all`로 묶으면? **정답 3초.** 한줄정리 후보: "겹침은 **실행**이 아니라 **기다림**에서". 소스 [Promise.all 병렬 vs 순차 await](../knowledge/concepts/promise-all-vs-sequential.md) (m5, feynman 통과 — 자격 충족). 2026-07-27 promise-all 카드 발행 때 답글 소재로 뽑았다가 "이건 카드 한 장 값어치"로 승격.
+
 ## 코치 제안 (승인 대기)
 <!-- 공백 분석/연결 제안에서 나온 후보. 사용자 승인 시 위로 이동. -->

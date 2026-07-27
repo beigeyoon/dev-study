@@ -3,10 +3,10 @@ id: 2026-07-22-promise-all-sequential
 concept: concepts/promise-all-vs-sequential.md
 domain: frontend
 label: JS · 비동기
-status: approved
+status: published
 accent: lime
 created: 2026-07-22
-published:
+published: 2026-07-27
 tags: [async, promise, concurrency]
 ---
 
@@ -36,4 +36,4 @@ A는 하나 끝나야 다음 시작이라 1초씩 3번. B는 셋을 한꺼번에
 A는 **기다리며** 부르고, B는 **다 부르고** 기다린다
 
 ## 캡션
-A랑 B, 각각 몇 초일까? 👇 정답은 댓글에서 #자바스크립트 #비동기
+A랑 B, 각각 몇 초일까? 👇 정답은 댓글에서
