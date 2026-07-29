@@ -11,7 +11,7 @@ feynman_passed: true
 created: 2026-06-23
 updated: 2026-07-27
 sources: []
-related: [concepts/http.md, concepts/closure.md]
+related: [concepts/http.md, concepts/closure.md, concepts/in-memory-vs-relational-db.md]
 tags: [network, auth, authentication, cookie, session, token, jwt, stateless, http, redis, scalability, spof]
 review_due: 2026-08-26
 ---
@@ -75,6 +75,7 @@ _(2026-07-27 복습에서 자력 도출 — 이 개념의 상위 프레임)_
 - **SPOF(단일 장애점):** 웹서버 3대가 멀쩡해도 공용 수첩이 죽으면 아무도 신분 확인을 못 해 **전 사용자 로그아웃**. 상태를 한 곳에 모은 대가.
 
 **왜 Redis인가 (≠ 별개 개념, DB의 한 갈래):** 관계형 DB(MySQL·Postgres)는 데이터를 **디스크**에 영구 저장하고 복잡한 쿼리를 지원한다. Redis는 **RAM**에 두고 `key→value` 꺼내기만 잘한다(빠름·휘발성). 세션은 ① **모든 요청마다 조회**되고 ② **만료되면 사라져도 되는 휘발성** — 정확히 인메모리 저장소의 특기다. 세션을 MySQL에 넣어도 *동작은 한다*, 느리고 DB가 갈릴 뿐.
+→ **본체는 [인메모리(Redis) vs 관계형 DB(MySQL)](in-memory-vs-relational-db.md)** (2026-07-29 생성). 여기서 "②공용 저장소"의 내부를 연다: RAM에 앉는 값으로 내는 청구서 3장(용량·비용 / 휘발성 / 조회 능력 상실), 그리고 **RAM에 앉을 자격 = 자주 읽히고 + 잃어도 재생성 가능한 데이터** — 세션이 정확히 그 조건이라는 것.
 
 **전이:** "상태를 어디 두나 + 각 위치의 청구서"는 인증 밖에서도 반복된다 — 캐시(로컬 vs 분산), 분산 시스템의 상태 배치, 심지어 [클로저](closure.md)의 "변수를 스택에 둘까 힙에 둘까"까지 같은 결.
 
@@ -113,7 +114,7 @@ _(2026-06-23 첫 접촉, 유도 추론 — HTTP stateless 떡밥에서 출발)_
 ## 미해결 질문
 - **무효화:** refresh token은 정확히 어떻게 도나? blocklist는 어디(Redis?)에 두나? "로그아웃"의 실제 구현은?
 - **② 위치의 비용 완화(2026-07-27):** 매 요청 홉과 SPOF는 실무에서 어떻게 줄이나? (Redis 복제/클러스터, 로컬 캐시 얹기, sticky session은 왜 열등한 해법인가?)
-- **database 첫 접점(2026-07-27):** 인메모리(Redis) vs 관계형(MySQL)의 갈림 — 휘발성·영속성·캐시는 별도 개념으로 팔 가치가 있다. → roadmap `database` 영역 개방 후보.
+- ✅ **해소(2026-07-29): database 첫 접점** — 인메모리 vs 관계형의 갈림을 [별도 페이지](in-memory-vs-relational-db.md)로 팜. `database` 영역 개방. 거기서 **무효화가 여기의 "토큰은 강제 로그아웃 불가"와 같은 문제**임도 확인됨(원본에서 떨어진 사본에 소식을 전하는 문제).
 - **봉인의 원리:** 토큰이 "위조 불가"인 건 서버 **비밀키 서명** 때문. 근데 토큰은 *읽을 순 있음*(암호화 아님) → 비밀번호를 담으면 안 됨. 서명/JWT 구조(header.payload.signature)는 어떻게 생겼나?
 - **쿠키 보안:** 쿠키가 탈취되면? `HttpOnly`·`Secure`·`SameSite` 속성은 뭘 막나? CSRF/XSS와의 관계.
 - **다음 칸:** 이게 [HTTPS/TLS](http.md)(평문 쿠키가 중간에 털리는 문제)와 어떻게 맞물리나.

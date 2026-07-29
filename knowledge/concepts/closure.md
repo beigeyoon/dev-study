@@ -11,7 +11,7 @@ feynman_passed: true
 created: 2026-06-21
 updated: 2026-07-27
 sources: []
-related: [concepts/call-stack.md, concepts/async-await.md, concepts/macrotask-queue.md, concepts/cookie-session-token.md]
+related: [concepts/call-stack.md, concepts/async-await.md, concepts/macrotask-queue.md, concepts/cookie-session-token.md, concepts/in-memory-vs-relational-db.md]
 tags: [closure, scope, memory, heap, javascript, execution]
 review_due: 2026-07-31
 ---
@@ -60,6 +60,15 @@ _(2026-06-21 세션, 콜 스택 미해결 질문에서 추론으로 도출)_
 - **why 중요:** 모듈 패턴(사적 변수), React `useState`/이벤트 핸들러가 렌더 시점 값을 기억, 디바운스/스로틀, `once`/메모이제이션 — 전부 클로저.
 - **트레이드오프:** 안 풀리는 참조 = 메모리 누수 위험(콜백/리스너 안 떼면 힙이 안 비워짐). 편의(상태 캡처)와 메모리의 교환.
 - **전이(2026-07-27):** "변수를 스택에 둘까 힙에 둘까"는 [쿠키/세션/토큰](cookie-session-token.md)의 "로그인 상태를 서버 안·공용 저장소·클라이언트 중 어디에 둘까"와 **같은 축**이다 — 상태의 위치를 고르면 거기 맞는 청구서(수명·비용·회수 가능성)가 따라온다. 언어 런타임과 분산 시스템이 같은 문제를 푼다.
+- **전이 확장(2026-07-29) — 같은 저울의 세 번째 층위:** [인메모리 vs 관계형 DB](in-memory-vs-relational-db.md)가 세 번째 칸을 채웠다.
+
+  | 층위 | 빠르고 · 짧게 살고 · 좁다 | 느리고 · 오래 살고 · 넓다 |
+  |---|---|---|
+  | **클로저**(여기) | 콜 스택 | 힙 |
+  | 쿠키/세션/토큰 | 웹서버 안 메모리 | 공용 저장소 |
+  | 인메모리 vs 관계형 | RAM (Redis) | 디스크 (MySQL) |
+
+  세 번 다 답이 "빠른 쪽으로 몰아라"가 아니라 **"수명과 접근 빈도를 보고 배치하라"**였다.
 
 ## 미해결 질문
 - "렉시컬 환경 / 실행 컨텍스트 / 스코프 체인"의 정확한 구조 — 변수 탐색이 체인을 어떻게 거슬러 오르나? (→ 다음 학습 후보)

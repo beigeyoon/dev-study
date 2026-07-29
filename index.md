@@ -8,6 +8,7 @@
 - frontend: 8개 (평균 3.6)
 - network: 2개 (평균 3.5)
 - os: 1개 (평균 3.0)
+- database: 1개 (평균 2.0) 🆕 2026-07-29 영역 개방
 
 ## frontend
 - [Promise](knowledge/concepts/promise.md) — "나중에 줄게" 약속 객체. pending→fulfilled/rejected(settled 불변), 상태·값을 박제해 콜백을 늦게 등록해도 결과를 안 놓침 · frontend · mastery 3/5 · importance 5/5
@@ -26,6 +27,7 @@
 - [프로세스 vs 스레드](knowledge/concepts/process-vs-thread.md) — 프로세스=격리된 자기 메모리를 받은 실행 단위, 스레드=프로세스 안 실행 흐름으로 메모리 공유. "JS 싱글 스레드"=콜 스택 하나=race condition 면제(선물). 콜 스택의 주체=JS 엔진(V8)의 단일 실행 스레드, 이벤트 루프는 호스트(브라우저·Node) 제공. 공유의 양날: 통신 공짜 ↔ race condition · os · mastery 3/5 · importance 4/5
 ## cs
 ## database
+- [인메모리(Redis) vs 관계형 DB(MySQL)](knowledge/concepts/in-memory-vs-relational-db.md) — RAM에 앉는 값으로 내는 청구서 3장: 용량·비용 / 휘발성 / 조회 능력 상실. **RAM에 앉을 자격 = 자주 읽히고 + 잃어도 재생성 가능한 데이터**(세션·캐시). 인덱스 덕에 느린 디스크가 빠른 RAM을 바름 = **자료구조가 하드웨어를 이긴다**. 캐시의 대가는 stale data — "틀린 걸 아무도 모른다" · database · mastery 2/5 · importance 4/5
 ## devops
 ## ai
 ## system-design

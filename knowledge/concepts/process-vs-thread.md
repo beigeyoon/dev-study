@@ -11,7 +11,7 @@ feynman_passed: true
 created: 2026-06-23
 updated: 2026-07-22
 sources: []
-related: [concepts/call-stack.md, concepts/event-loop.md, concepts/promise-all-vs-sequential.md]
+related: [concepts/call-stack.md, concepts/event-loop.md, concepts/promise-all-vs-sequential.md, concepts/in-memory-vs-relational-db.md]
 tags: [os, process, thread, concurrency, parallelism, race-condition, single-thread, web-worker, js-engine, runtime]
 review_due: 2026-08-05
 ---
@@ -79,6 +79,7 @@ _(2026-06-23 첫 접촉, 유도 추론 — "JS는 싱글 스레드"가 뭔지에
 - **연결:** [Promise.all 병렬 vs 순차](promise-all-vs-sequential.md) — "동시성≠병렬성"의 토대. 싱글 스레드=병렬 불가(동시성은 이벤트 루프로 흉내) / 멀티 스레드·멀티 코어=진짜 병렬. Web Worker(=별도 스레드)가 "진짜 병렬"인 이유이자, 복사 통신을 쓰는 이유(race 회피).
 - **트레이드오프:** 공유(스레드)=빠른 통신↔race 위험 / 격리(프로세스)=안전↔통신 비쌈(복사). Web Worker는 스레드지만 **격리(복사) 모델**을 골라 안전을 삼.
 - **전이(transfer):** "상태를 공유할까 격리할까"는 OS 너머의 일반 설계 축 — 분산 시스템, [쿠키/세션/토큰](cookie-session-token.md)의 stateful↔stateless와 같은 결.
+- **전이(2026-07-29) — 여기가 "네트워크 홉"의 진짜 원인:** [인메모리 vs 관계형 DB](in-memory-vs-relational-db.md)에서 Redis 조회(~0.5–1ms)가 자기 RAM(~100ns)보다 수천 배 비싼 건 *"다른 기계라서"* 가 아니라 더 근본적으로 **다른 프로세스 = 메모리 격리의 대가**다. 같은 프로세스면 포인터 한 번, 프로세스가 다르면 직렬화 + 경계 넘기. 위의 "통신 비쌈(복사)" 청구서가 분산 저장소에서 그대로 재청구된다.
 
 ## 미해결 질문
 - **락/뮤텍스:** `①②③`을 atomic하게 묶는다는 게 실제로 어떻게? 데드락은 뭔가?
