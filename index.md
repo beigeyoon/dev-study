@@ -8,7 +8,7 @@
 - frontend: 8개 (평균 3.6)
 - network: 2개 (평균 3.5)
 - os: 1개 (평균 3.0)
-- database: 1개 (평균 3.0)
+- database: 2개 (평균 2.0)
 
 ## frontend
 - [Promise](knowledge/concepts/promise.md) — "나중에 줄게" 약속 객체. pending→fulfilled/rejected(settled 불변), 상태·값을 박제해 콜백을 늦게 등록해도 결과를 안 놓침 · frontend · mastery 3/5 · importance 5/5
@@ -28,6 +28,7 @@
 ## cs
 ## database
 - [인메모리(Redis) vs 관계형 DB(MySQL)](knowledge/concepts/in-memory-vs-relational-db.md) — RAM에 앉는 값으로 내는 청구서 3장: 용량·비용 / 휘발성 / 조회 능력 상실. **RAM에 앉을 자격 = 자주 읽히고 + 잃어도 재생성 가능한 데이터**(세션·캐시). 인덱스 덕에 느린 디스크가 빠른 RAM을 바름 = **자료구조가 하드웨어를 이긴다**. 캐시의 대가는 stale data — "틀린 걸 아무도 모른다". **1차 원리: 속도는 성질이 아니라 거래 — 진짜 질문은 "이 데이터는 무엇을 팔아도 되는가"** · database · mastery 3/5 · importance 4/5
+- [B-tree (인덱스의 실체)](knowledge/concepts/b-tree.md) — 500만 개를 **뒤지는** 대신 **안내판 3장을 읽게** 만드는 디스크 위의 계단식 안내판 뭉치. 안내판 한 장의 **갈림길 개수**가 전부(2개면 23번, 수백 개면 3번). 안내판 보러 가는 게 비싸고 한 번 가면 큰 종이가 통째로 딸려오니 **꽉 채워 적는 게 이득** · database · mastery 1/5 · importance 4/5
 ## devops
 ## ai
 ## system-design
